@@ -8,7 +8,7 @@
 .buildlog/
 .history
 .svn/
-*.evn
+.evn
 todo_list.txt
 
 # IntelliJ related
