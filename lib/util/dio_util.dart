@@ -54,8 +54,8 @@ class DioUtil {
           ),
         ),
       );
-    } catch (Exception) {
-      throw Exception;
+    } catch (e) {
+      rethrow;
     }
   }
 

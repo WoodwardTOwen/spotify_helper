@@ -1,11 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:floor/floor.dart';
 import 'package:spotify_helper/models/user_model.dart';
 
-@entity
 class PlaylistModel extends Equatable {
   final String name;
-  @primaryKey
   final String id;
   final UserModel owner;
   final bool isPublic;
