@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:floor/floor.dart';
 import 'package:spotify_helper/models/found_playlist_item.dart';
 
-@entity
 class TrackModel extends Equatable {
-  @primaryKey
   final String trackId;
   final String trackName;
   final String

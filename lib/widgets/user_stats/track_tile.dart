@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/models/track_model.dart';
+import 'package:spotify_helper/widgets/misc/network_image.dart';
 
 class TrackTile extends StatelessWidget {
   final TrackModel _trackItem;
@@ -22,9 +23,10 @@ class TrackTile extends StatelessWidget {
         ),
       ),
       trailing: CircleAvatar(
-        backgroundImage: NetworkImage(
-          _trackItem.albumImageUrl,
-        ),
+        backgroundColor: Colors.transparent,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(40.0),
+            child: MyNetworkImage(imageUrl: _trackItem.albumImageUrl)),
       ),
     );
   }
