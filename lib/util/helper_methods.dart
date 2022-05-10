@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HelperMethods {
-  static void createSnackBarMessage(
-      BuildContext context, String stringContent) {
+  static void createSnackBarMessage(BuildContext context, String stringContent,
+      {bool isSecondaryColour = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           stringContent,
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: GoogleFonts.poppins().fontFamily),
+          style: TextStyle(
+              fontFamily: GoogleFonts.poppins().fontFamily,
+              color: isSecondaryColour ? Colors.black : Colors.white),
         ),
         duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: isSecondaryColour
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.primary,
         behavior: SnackBarBehavior.floating,
         elevation: 2.0,
       ),
