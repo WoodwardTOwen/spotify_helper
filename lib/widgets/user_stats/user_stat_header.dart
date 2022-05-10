@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
 import 'package:spotify_helper/widgets/user_stats/user_stat_container.dart';
 
+import '../misc/network_image.dart';
+
 class UserStatHeader extends StatelessWidget {
   const UserStatHeader({Key? key}) : super(key: key);
 
@@ -40,6 +42,13 @@ class UserStatHeader extends StatelessWidget {
                 radius: 70.0,
                 backgroundImage: NetworkImage(
                   user.userImageUrl,
+                ),
+                backgroundColor: Colors.transparent,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(70.0),
+                  child: MyNetworkImage(
+                    imageUrl: user.userImageUrl,
+                  ),
                 ),
               ),
             ),
