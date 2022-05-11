@@ -22,11 +22,13 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Consumer<SpotifyAuth>(
       builder: (ctx, auth, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Spotify Helper',
         theme: ThemeData(
           fontFamily: GoogleFonts.poppins().fontFamily,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-              .copyWith(secondary: Colors.amber),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: const Color.fromRGBO(109, 139, 116, 1),
+              secondary: Colors.amber),
           textTheme: const TextTheme(
             headline3: TextStyle(fontSize: 40, color: Colors.white),
             headline4: TextStyle(fontSize: 24, color: Colors.white),

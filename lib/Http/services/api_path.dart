@@ -16,8 +16,11 @@ class ApiPath {
   static const String getCurrentUser = '$baseUrl/v1/me';
   static String getUserById(String userId) => '$baseUrl/v1/users/$userId';
 
-  static String getUserTop5Tracks({required int offset, required int limit}) =>
-      '$baseUrl/v1/me/top/tracks?limit=$limit&offset=$offset';
+  static String getUserTop5Tracks(
+          {required int offset,
+          required int limit,
+          required String timeFrame}) =>
+      '$baseUrl/v1/me/top/tracks?limit=$limit&offset=$offset&time_range=$timeFrame';
 
   //Search - Could potentially expand the limit on these calls but for now keep it at 10
   static String searchForTrack({required String searchedTrack}) =>
