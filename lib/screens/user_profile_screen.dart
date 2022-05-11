@@ -42,10 +42,6 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**
-     * TODO TURN THESE KEYS INTO CONSTANTS + Clean up the provider
-     */
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       body: FutureBuilder(
