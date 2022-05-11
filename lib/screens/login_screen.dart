@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(239, 234, 216, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               child: Text(
-                'Welcome Donny!',
+                'Spotify Helper',
                 style: Theme.of(context).textTheme.headline3,
                 overflow: TextOverflow.ellipsis,
               ),

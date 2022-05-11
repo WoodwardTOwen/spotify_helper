@@ -22,6 +22,7 @@ class SpotifyHelperDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       child: Column(
         children: [
           ListView(

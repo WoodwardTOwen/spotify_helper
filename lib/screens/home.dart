@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
             ),
           )
         : Scaffold(
-            backgroundColor: Colors.white70,
+            backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
             appBar: AppBar(
               title: const Text(
                 'Spotify Helper',
@@ -81,7 +81,8 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   } else {
-                    return const Text('Something Went Wrong');
+                    return const Text('Something Went Wrong, Please Try Again',
+                        style: TextStyle(color: Colors.black));
                   }
                 },
               ),

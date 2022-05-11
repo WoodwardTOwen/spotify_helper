@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
 import 'package:spotify_helper/widgets/user_stats/user_stat_container.dart';
-
 import '../misc/network_image.dart';
 
 class UserStatHeader extends StatelessWidget {
@@ -23,7 +22,7 @@ class UserStatHeader extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             margin: const EdgeInsets.only(top: 75.0),
             child: const SizedBox(
-              height: 250.0,
+              height: 220.0,
               width: double.infinity,
               child: UserStatContainer(),
             ),
@@ -40,9 +39,6 @@ class UserStatHeader extends StatelessWidget {
               radius: 75.0,
               child: CircleAvatar(
                 radius: 70.0,
-                backgroundImage: NetworkImage(
-                  user.userImageUrl,
-                ),
                 backgroundColor: Colors.transparent,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(70.0),
