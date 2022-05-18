@@ -15,14 +15,13 @@ import '../models/track_model.dart';
 //Need to change process to a stream so i can kill off the process - the loading page can then be removed with a loading spinner instead
 //https://stackoverflow.com/questions/17552757/is-there-any-way-to-cancel-a-dart-future
 
-
 class PlaylistFinderProvider with ChangeNotifier {
   int playlistCount = 0, offset = 0;
-  final List<FoundPlaylistItem> _listOfUserPlaylists = [];
+  final List<PlaylistModel> _listOfUserPlaylists = [];
   PlaylistRepository playlistRepository = PlaylistRepository();
 
-  FoundPlaylistItem? _currentPlaylist;
-  final List<FoundPlaylistItem> _playlistThatContainTheTrackId = [];
+  PlaylistModel? _currentPlaylist;
+  final List<PlaylistModel> _playlistThatContainTheTrackId = [];
 
   final List<TrackModel> _searchedTrackResults = [];
 
@@ -30,7 +29,7 @@ class PlaylistFinderProvider with ChangeNotifier {
     return [..._searchedTrackResults];
   }
 
-  List<FoundPlaylistItem> get getListOfPlaylistsForDesiredTrack {
+  List<PlaylistModel> get getListOfPlaylistsForDesiredTrack {
     return [..._playlistThatContainTheTrackId];
   }
 
@@ -40,29 +39,20 @@ class PlaylistFinderProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getPlaylistFromRemoteAddLocally() async {
+    final List<PlaylistModel> _playlistFromRemote =
+        await playlistRepository.getPlaylistInformation();
 
-  Future<void> getPlaylistFromRemoteAddLocally () async {
-    final List<PlaylistModel> _playlistFromRemote = await playlistRepository.getPlaylistInformation();
-    
     //Add to DB
-    
-
-
-
   }
-
-
-
-
-
-
 
   //Old search method
 
   //NEED THE CALL FOR GATHER OF DATA
   Future<void> getPlaylistFromRemote() async {
-    _listOfUserPlaylists
-        .addAll(await playlistRepository.getSearchInformation());
+    _listOfUserPlaylists.addAll(await playlistRepository.getPlaylistInformation(
+        limit:
+            50)); //Need a way to edit so this is recursive to get every possible result
   }
 
   //Double check that the searched term isn't the same as the previous - not point making the extra call
@@ -78,7 +68,7 @@ class PlaylistFinderProvider with ChangeNotifier {
     if (_playlistThatContainTheTrackId.isNotEmpty) {
       _playlistThatContainTheTrackId.clear();
     }
-    playlistCount = _listOfUserPlaylists.first.playlistTotalCount;
+    playlistCount = _listOfUserPlaylists.first.numOfTracks;
 
     await Future.doWhile(() async {
       try {
@@ -92,7 +82,7 @@ class PlaylistFinderProvider with ChangeNotifier {
             notifyListeners();
             return false;
           } else {
-            playlistCount = _listOfUserPlaylists.first.playlistTotalCount;
+            playlistCount = _listOfUserPlaylists.first.numOfTracks;
           }
         }
         return true; //toContinue
@@ -114,7 +104,7 @@ class PlaylistFinderProvider with ChangeNotifier {
     _currentPlaylist = _listOfUserPlaylists.elementAt(0);
 
     List<TrackModel> list = await playlistRepository.getListOfTrackModel(
-        searchItemId: _listOfUserPlaylists.first.playlistId,
+        searchItemId: _listOfUserPlaylists.first.id,
         offset: offset,
         limit: limit);
 
