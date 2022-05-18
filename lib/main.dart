@@ -14,8 +14,8 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<PlaylistBlocBloc>(create: (ctx) {
-          return PlaylistBlocBloc()..add(MyPlaylistsFetched());
+        BlocProvider<PlaylistBloc>(create: (ctx) {
+          return PlaylistBloc()..add(MyPlaylistsFetchedEvent());
         })
       ],
       child: const SpotifyHelper(),

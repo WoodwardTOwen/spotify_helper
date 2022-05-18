@@ -1,5 +1,6 @@
 part of 'playlist_bloc_bloc.dart';
 
+@immutable
 abstract class PlaylistBlocEvent extends Equatable {
   const PlaylistBlocEvent();
 
@@ -7,4 +8,6 @@ abstract class PlaylistBlocEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class MyPlaylistsFetched extends PlaylistBlocEvent {}
+class MyPlaylistsFetchedEvent extends PlaylistBlocEvent {}
+
+class RefreshMyPlaylistsEvent extends PlaylistBlocEvent {}
