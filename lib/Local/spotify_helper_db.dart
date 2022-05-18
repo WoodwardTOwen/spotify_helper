@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:floor/floor.dart';
 import 'package:spotify_helper/Local/dao/track_model_dao.dart';
-import 'package:spotify_helper/models/found_playlist_item.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import '../models/playlist_model.dart';

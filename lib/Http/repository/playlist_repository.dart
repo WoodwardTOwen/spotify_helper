@@ -1,4 +1,3 @@
-import 'package:spotify_helper/models/found_playlist_item.dart';
 import 'package:spotify_helper/util/dio_util.dart';
 
 import '../../models/playlist_model.dart';
@@ -24,18 +23,6 @@ class PlaylistRepository implements IPlaylistRepository {
     } catch (e) {
       rethrow;
     }
-  }
-
-  //New ones go here - could always just use the top one instead
-  @override
-  Future<List<FoundPlaylistItem>> getSearchInformation() async {
-    final response =
-        await client.get(ApiPath.getListOfPlaylists(limit: 40, offset: 0));
-    final list = await response.data['items']
-        .map((item) => FoundPlaylistItem.fromJson(item))
-        .toList();
-
-    return List<FoundPlaylistItem>.from(list);
   }
 
   @override

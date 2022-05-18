@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:spotify_helper/models/found_playlist_item.dart';
 
 class TrackModel extends Equatable {
   final String trackId;

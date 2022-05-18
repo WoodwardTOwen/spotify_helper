@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/Http/repository/playlist_repository.dart';
-import 'package:spotify_helper/models/found_playlist_item.dart';
 import 'package:collection/collection.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 
