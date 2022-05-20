@@ -26,8 +26,8 @@ class PlaylistBlocLoaded extends PlaylistBlocState {
   List<Object> get props => [playlists];
 }
 
-class FailedToLoadState extends PlaylistBlocState {
+class PlaylistFailureState extends PlaylistBlocState {
   final String error;
 
-  const FailedToLoadState({required this.error});
+  const PlaylistFailureState({required this.error});
 }

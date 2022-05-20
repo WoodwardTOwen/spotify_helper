@@ -33,6 +33,10 @@ class ApiPath {
   static String getListOfPlaylists({required int offset, required int limit}) =>
       'https://api.spotify.com/v1/me/playlists?limit=$limit&offset=$offset';
 
+  static String reRouteToPlaylistInApp(String playlistId) {
+    return 'spotify:playlist:$playlistId';
+  }
+
   //Tracks
   static String getListOfTracksByLimitAndOffset({
     required int offset,

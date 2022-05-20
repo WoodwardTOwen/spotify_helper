@@ -21,6 +21,7 @@ class TrackTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           fontSize: 12,
         ),
+        maxLines: 2,
       ),
       trailing: CircleAvatar(
         backgroundColor: Colors.transparent,

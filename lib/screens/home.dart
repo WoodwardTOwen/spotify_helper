@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
                             )
                           ])),
                     );
-                  } else if (state is FailedToLoadState) {
+                  } else if (state is PlaylistFailureState) {
                     return Text(
                         'Something Went Wrong: ${state.error.toString()}, \n Please Try Again',
                         style: const TextStyle(color: Colors.black));

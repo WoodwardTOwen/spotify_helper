@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
+import 'package:spotify_helper/screens/playlist_items_screen.dart';
+import 'package:spotify_helper/widgets/misc/network_image.dart';
 
 class PlayListTileGridView extends StatelessWidget {
   final PlaylistModel _currentItem;
@@ -12,27 +14,13 @@ class PlayListTileGridView extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          onTap: () {},
-          child: Image.network(
-            _currentItem.playlistImageUrl,
-            fit: BoxFit.cover,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                ),
-              );
+            onTap: () {
+              Navigator.pushNamed(context, PlaylistItemsScreen.routeName,
+                  arguments: _currentItem);
             },
-          ),
-        ),
+            child: MyNetworkImageNotCached(
+              playlistImageUrl: _currentItem.playlistImageUrl,
+            )),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           title: Text(
