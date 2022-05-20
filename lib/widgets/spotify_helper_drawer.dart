@@ -53,10 +53,10 @@ class SpotifyHelperDrawer extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
-                        padding: const EdgeInsets.only(left: 90),
+                        padding: const EdgeInsets.only(left: 100),
                         child: Text(
                           _currentUser.displayName,
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline5,
                           softWrap: true,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

@@ -22,7 +22,7 @@ class PlaylistBloc extends Bloc<PlaylistBlocEvent, PlaylistBlocState> {
             final playlists = await playlistRepository.getPlaylistInformation();
             emit(PlaylistBlocLoaded(playlists: playlists));
           } catch (e) {
-            emit(FailedToLoadState(error: e.toString()));
+            emit(PlaylistFailureState(error: e.toString()));
           }
         }
       },

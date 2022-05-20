@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/spotify_auth.dart';
 import 'package:spotify_helper/screens/home.dart';
 import 'package:spotify_helper/screens/login_screen.dart';
+import 'package:spotify_helper/screens/playlist_items_screen.dart';
 import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
 import 'package:spotify_helper/screens/search_for_item.dart';
 import 'package:spotify_helper/screens/sync_screen.dart';
@@ -32,13 +33,14 @@ class _AppState extends State<App> {
           textTheme: const TextTheme(
             headline3: TextStyle(fontSize: 40, color: Colors.white),
             headline4: TextStyle(fontSize: 24, color: Colors.white),
+            headline5: TextStyle(fontSize: 16, color: Colors.white),
             headline6: TextStyle(fontSize: 12, color: Colors.white),
             bodyText2: TextStyle(fontSize: 16, color: Colors.white),
             bodyText1: TextStyle(fontSize: 10, color: Colors.white),
           ),
         ),
         home: auth.getIsUserAuthenticated
-            ? Home()
+            ? const Home()
             : FutureBuilder(
                 future: auth.attemptAutoLogin(),
                 builder: (ctx, snapshot) =>
@@ -47,12 +49,13 @@ class _AppState extends State<App> {
                         : const LoginScreen(),
               ),
         routes: {
-          Home.routeName: (ctx) => Home(),
+          Home.routeName: (ctx) => const Home(),
           UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
           SearchForItemScreen.routeName: (ctx) => const SearchForItemScreen(),
           SearchAllPlaylistsScreen.routeName: (ctx) =>
               const SearchAllPlaylistsScreen(),
           SyncScreen.routeName: (ctx) => const SyncScreen(),
+          PlaylistItemsScreen.routeName: (ctx) => const PlaylistItemsScreen(),
         },
       ),
     );

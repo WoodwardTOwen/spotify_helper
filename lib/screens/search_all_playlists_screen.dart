@@ -86,24 +86,25 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
                                         padding:
                                             const EdgeInsets.only(bottom: 20),
                                         child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                            ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
 
-                                            //Change colour to secondary?
-                                            onPressed: () {
-                                              HelperMethods.createSnackBarMessage(
-                                                  context,
-                                                  "Soz Mush - This is for the future:)",
-                                                  isSecondaryColour: true);
-                                            },
-                                            child: const Text(
-                                              'Add to Playlist',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            )),
+                                          //Change colour to secondary?
+                                          onPressed: () {
+                                            HelperMethods.createSnackBarMessage(
+                                                context,
+                                                "Soz Mush - This is for the future:)",
+                                                isSecondaryColour: true);
+                                          },
+                                          child: const Text(
+                                            'Add to Playlist',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

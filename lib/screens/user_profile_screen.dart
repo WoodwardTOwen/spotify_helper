@@ -53,24 +53,22 @@ class UserProfileScreen extends StatelessWidget {
                   )
                 : SafeArea(
                     child: SingleChildScrollView(
-                      child: Expanded(
-                        child: Column(
-                          children: [
-                            const UserStatHeader(),
-                            _buildTrackHeader(
-                              "Top Tracks (Past 4 Weeks)",
-                            ),
-                            _buildTrackList('short_term'),
-                            _buildTrackHeader(
-                              "Top Tracks (Past 6 Months)",
-                            ),
-                            _buildTrackList('medium_term'),
-                            _buildTrackHeader(
-                              "Top Tracks (All-Time)",
-                            ),
-                            _buildTrackList('long_term'),
-                          ],
-                        ),
+                      child: Column(
+                        children: [
+                          const UserStatHeader(),
+                          _buildTrackHeader(
+                            "Top Tracks (Past 4 Weeks)",
+                          ),
+                          _buildTrackList('short_term'),
+                          _buildTrackHeader(
+                            "Top Tracks (Past 6 Months)",
+                          ),
+                          _buildTrackList('medium_term'),
+                          _buildTrackHeader(
+                            "Top Tracks (All-Time)",
+                          ),
+                          _buildTrackList('long_term'),
+                        ],
                       ),
                     ),
                   ),
