@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
 import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
-
-import '../widgets/user_stats/track_tile.dart';
+import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 
 class SearchForItemScreen extends StatefulWidget {
   static const routeName = '/search-for-items';

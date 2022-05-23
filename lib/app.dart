@@ -54,7 +54,7 @@ class _AppState extends State<App> {
           SearchForItemScreen.routeName: (ctx) => const SearchForItemScreen(),
           SearchAllPlaylistsScreen.routeName: (ctx) =>
               const SearchAllPlaylistsScreen(),
-          SyncScreen.routeName: (ctx) => const SyncScreen(),
+          SyncScreen.routeName: (ctx) => SyncScreen(),
           PlaylistItemsScreen.routeName: (ctx) => const PlaylistItemsScreen(),
         },
       ),

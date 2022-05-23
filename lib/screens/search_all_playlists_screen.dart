@@ -1,10 +1,11 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
 import 'package:spotify_helper/util/helper_methods.dart';
-import 'package:spotify_helper/widgets/playlist/playlist_finder_heading.dart';
-import 'package:spotify_helper/widgets/playlist/playlist_finder_loading_screen.dart';
-import 'package:spotify_helper/widgets/playlist/playlist_tile_finder.dart';
+import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_heading.dart';
+import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_loading_screen.dart';
+import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_finder.dart';
 
 import '../models/track_model.dart';
 
@@ -19,12 +20,28 @@ class SearchAllPlaylistsScreen extends StatefulWidget {
 
 //TODO Create new UI for the album color/ naming
 class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
+  late PlaylistFinderProvider _playlistFinderProvider;
+
   Future<void> _beginSearch(
       String itemId, String itemTrack, String itemArtist) async {
     await Provider.of<PlaylistFinderProvider>(context, listen: false)
         .getPlaylistFromRemote();
+
     await Provider.of<PlaylistFinderProvider>(context, listen: false)
         .getAllPlaylistsContainingSearchItemId(itemId, itemTrack, itemArtist);
+  }
+
+  @override
+  void didChangeDependencies() {
+    _playlistFinderProvider =
+        Provider.of<PlaylistFinderProvider>(context, listen: false);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _playlistFinderProvider.disposeSearch();
+    super.dispose();
   }
 
   @override
@@ -32,8 +49,8 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
     final args = ModalRoute.of(context)!.settings.arguments as TrackModel;
     return WillPopScope(
       onWillPop: () async {
-        Provider.of<PlaylistFinderProvider>(context, listen: false)
-            .disposeSearch;
+        //Provider.of<PlaylistFinderProvider>(context, listen: false)
+        //.disposeSearch();
         return true;
       },
       child: Scaffold(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
-import 'package:spotify_helper/widgets/user_stats/track_tile.dart';
-import 'package:spotify_helper/widgets/user_stats/user_stat_header.dart';
+
+import '../widgets/user_stats_widgets/track_tile.dart';
+import '../widgets/user_stats_widgets/user_stat_header.dart';
 
 class UserProfileScreen extends StatelessWidget {
   static const routeName = '/user-profile-screen';

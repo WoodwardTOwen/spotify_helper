@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_helper/Http/bloc/playlist_tracks/bloc/playlist_tracks_bloc.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 import 'package:spotify_helper/widgets/misc/network_image.dart';
+import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Http/services/api_path.dart';
-import '../widgets/user_stats/track_tile.dart';
 
 class PlaylistItemsScreen extends StatelessWidget {
   static const routeName = '/playlist-items';

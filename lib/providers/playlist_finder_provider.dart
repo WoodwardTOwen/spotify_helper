@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/Http/repository/playlist_repository.dart';
 import 'package:collection/collection.dart';
@@ -8,14 +9,13 @@ import 'package:spotify_helper/models/playlist_model.dart';
 import '../models/track_model.dart';
 
 //TODO Create Error handling for an on back pressed scenario
-//TOD NEED TO KILL THE PROCESS AND RESET RESORUCES
-//NEED TO CLEAN UP AFTER THE RESOURCES
 //https://blog.codemagic.io/flutter-tutorial-app-arhitecture-beginners/
 //Need to change process to a stream so i can kill off the process - the loading page can then be removed with a loading spinner instead
 //https://stackoverflow.com/questions/17552757/is-there-any-way-to-cancel-a-dart-future
 
 class PlaylistFinderProvider with ChangeNotifier {
   int playlistCount = 0, offset = 0;
+  bool isSearchCancelled = false;
   final List<PlaylistModel> _listOfUserPlaylists = [];
   PlaylistRepository playlistRepository = PlaylistRepository();
 
@@ -32,17 +32,14 @@ class PlaylistFinderProvider with ChangeNotifier {
     return [..._playlistThatContainTheTrackId];
   }
 
+  void setSearchIsStopped() {
+    isSearchCancelled = true;
+  }
+
   void clearCachedSearchItems() {
     if (_searchedTrackResults.isNotEmpty) {
       _searchedTrackResults.clear();
     }
-  }
-
-  Future<void> getPlaylistFromRemoteAddLocally() async {
-    final List<PlaylistModel> _playlistFromRemote =
-        await playlistRepository.getPlaylistInformation();
-
-    //Add to DB
   }
 
   //Old search method
@@ -62,19 +59,28 @@ class PlaylistFinderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ///[isSearchCancelled] is used to stop the search if the user presses the back button
+  ///[isFound] is used to stop the search if the search result is found
+  ///[fetchAndCompare] is used to fetch the next page of results and monitors the offset and limit for each search
+
   Future<void> getAllPlaylistsContainingSearchItemId(String searchItemId,
       String searchItemTrack, String searchItemArtist) async {
     if (_playlistThatContainTheTrackId.isNotEmpty) {
       _playlistThatContainTheTrackId.clear();
     }
+    isSearchCancelled = false;
     playlistCount = _listOfUserPlaylists.first.numOfTracks;
 
     await Future.doWhile(() async {
       try {
+        if (isSearchCancelled == true) {
+          return false;
+        }
+
         var isFound = await fetchAndCompare(
             searchItemId, searchItemTrack, searchItemArtist);
 
-        if (isFound || playlistCount == 0) {
+        if ((isFound || playlistCount == 0 && isSearchCancelled != true)) {
           _listOfUserPlaylists.removeAt(0);
           _resetCounters();
           if (_listOfUserPlaylists.isEmpty) {
@@ -122,6 +128,7 @@ class PlaylistFinderProvider with ChangeNotifier {
   }
 
   void disposeSearch() {
+    setSearchIsStopped();
     _listOfUserPlaylists.clear();
     _playlistThatContainTheTrackId.clear();
     _currentPlaylist = null;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
-import 'package:spotify_helper/widgets/user_stats/user_stat_container.dart';
+import 'package:spotify_helper/widgets/user_stats_widgets/user_stat_container.dart';
 import '../misc/network_image.dart';
 
 class UserStatHeader extends StatelessWidget {

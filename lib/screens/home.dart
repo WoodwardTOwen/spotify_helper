@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/Http/bloc/playlist/playlist_bloc_bloc.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
-import 'package:spotify_helper/widgets/playlist/playlist_tile_grid_view.dart';
+import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_grid_view.dart';
 import 'package:spotify_helper/widgets/spotify_helper_drawer.dart';
 
 import '../models/user_model.dart';
@@ -39,6 +39,10 @@ class _HomeState extends State<Home> {
         _currentUser = value;
       });
     });
+  }
+
+  Widget _createErrorMessage(String errorMessage) {
+    return Text(errorMessage, style: const TextStyle(color: Colors.black));
   }
 
   //TODO maybe reform the playlist filter to use the BLOCSelector instead
@@ -123,12 +127,11 @@ class _HomeState extends State<Home> {
                           ])),
                     );
                   } else if (state is PlaylistFailureState) {
-                    return Text(
-                        'Something Went Wrong: ${state.error.toString()}, \n Please Try Again',
-                        style: const TextStyle(color: Colors.black));
+                    return _createErrorMessage(
+                        'Something Went Wrong: ${state.error.toString()}, \n Please Try Again');
                   } else {
-                    return const Text('Something Went Wrong, Please Try Again',
-                        style: TextStyle(color: Colors.black));
+                    return _createErrorMessage(
+                        'Something Went Wrong, Please Try Again');
                   }
                 },
               ),
