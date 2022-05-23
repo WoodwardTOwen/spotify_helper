@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spotify_helper/providers/playlist_finder_provider.dart';
 
 import '../../providers/user_provider.dart';
 

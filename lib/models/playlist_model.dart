@@ -6,6 +6,7 @@ class PlaylistModel extends Equatable {
   final String id;
   final UserModel owner;
   final bool isPublic;
+  final String description;
   final int numOfTracks;
   final String playlistImageUrl;
   final String externalUrl;
@@ -15,6 +16,7 @@ class PlaylistModel extends Equatable {
     required this.id,
     required this.owner,
     required this.isPublic,
+    required this.description,
     required this.numOfTracks,
     required this.playlistImageUrl,
     required this.externalUrl,
@@ -28,6 +30,7 @@ class PlaylistModel extends Equatable {
         json['owner'],
       ),
       isPublic: json['public'],
+      description: json["description"],
       numOfTracks: json['tracks']['total'],
       playlistImageUrl:
           json['images'].length != 0 ? json['images'][0]['url'] : "",
@@ -40,6 +43,7 @@ class PlaylistModel extends Equatable {
         'id': id,
         'external_url': externalUrl,
         'is_public': isPublic,
+        'description': description,
         'num_of_tracks': numOfTracks,
         'playlist_image_url': playlistImageUrl,
         'owner': owner.toJson(),
@@ -51,6 +55,7 @@ class PlaylistModel extends Equatable {
         id,
         owner,
         isPublic,
+        description,
         numOfTracks,
         playlistImageUrl,
         externalUrl,

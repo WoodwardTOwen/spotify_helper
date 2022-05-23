@@ -6,13 +6,11 @@ class FollowersModel {
 
   factory FollowersModel.fromJson(Map<String, dynamic> json) {
     return FollowersModel(
-      //href: json['href'],
       followerTotal: json['total'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'href': href,
         'total': followerTotal,
       };
 }

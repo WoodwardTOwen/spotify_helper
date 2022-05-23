@@ -1,4 +1,3 @@
-import 'package:spotify_helper/models/found_playlist_item.dart';
 import 'package:spotify_helper/util/dio_util.dart';
 
 import '../../models/playlist_model.dart';
@@ -11,26 +10,19 @@ class PlaylistRepository implements IPlaylistRepository {
 
   //TODO Offset needs working around
   @override
-  Future<List<PlaylistModel>> getPlaylistInformation() async {
-    final response =
-        await client.get(ApiPath.getListOfPlaylists(limit: 40, offset: 0));
-    final list = response.data['items']
-        .map((item) => PlaylistModel.fromJson(item))
-        .toList();
+  Future<List<PlaylistModel>> getPlaylistInformation(
+      {int limit = 40, int offset = 0}) async {
+    try {
+      final response = await client
+          .get(ApiPath.getListOfPlaylists(limit: limit, offset: offset));
+      final list = response.data['items']
+          .map((item) => PlaylistModel.fromJson(item))
+          .toList();
 
-    return List<PlaylistModel>.from(list);
-  }
-
-  //New ones go here - could always just use the top one instead
-  @override
-  Future<List<FoundPlaylistItem>> getSearchInformation() async {
-    final response =
-        await client.get(ApiPath.getListOfPlaylists(limit: 40, offset: 0));
-    final list = await response.data['items']
-        .map((item) => FoundPlaylistItem.fromJson(item))
-        .toList();
-
-    return List<FoundPlaylistItem>.from(list);
+      return List<PlaylistModel>.from(list);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

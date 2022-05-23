@@ -9,11 +9,41 @@ class MyNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
       progressIndicatorBuilder: (context, url, downloadProgress) =>
           CircularProgressIndicator(value: downloadProgress.progress),
       errorWidget: (context, url, error) => const Icon(Icons.error),
       imageUrl: imageUrl,
+    );
+  }
+}
+
+class MyNetworkImageNotCached extends StatelessWidget {
+  final String playlistImageUrl;
+
+  const MyNetworkImageNotCached({Key? key, required this.playlistImageUrl})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(
+      playlistImageUrl,
+      fit: BoxFit.cover,
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 30),
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
+          ),
+        );
+      },
     );
   }
 }
