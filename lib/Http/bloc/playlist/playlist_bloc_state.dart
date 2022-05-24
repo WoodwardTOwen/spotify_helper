@@ -13,14 +13,21 @@ class PlaylistBlocLoadingState extends PlaylistBlocState {}
 
 class PlaylistBlocLoaded extends PlaylistBlocState {
   final List<PlaylistModel> playlists;
+  final bool hasReachedMax;
 
-  const PlaylistBlocLoaded({required this.playlists});
+  const PlaylistBlocLoaded(
+      {required this.playlists, required this.hasReachedMax});
 
   List<PlaylistModel> getFilteredResult(String userId) {
     return playlists
         .where((playlist) => playlist.owner.userId == userId)
         .toList();
   }
+
+  PlaylistBlocLoaded copyWith(
+          {required List<PlaylistModel> playlists,
+          required bool hasReachedMax}) =>
+      PlaylistBlocLoaded(playlists: playlists, hasReachedMax: hasReachedMax);
 
   @override
   List<Object> get props => [playlists];
