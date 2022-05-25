@@ -7,7 +7,8 @@ class ApiPath {
     'user-top-read',
     'playlist-read-private',
     'user-modify-playback-state',
-    'user-read-playback-state'
+    'user-read-playback-state',
+    'playlist-read-collaborative',
   ];
 
   static String get scopesString => _scopes.join(',');

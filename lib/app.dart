@@ -5,6 +5,7 @@ import 'package:spotify_helper/providers/spotify_auth.dart';
 import 'package:spotify_helper/screens/home.dart';
 import 'package:spotify_helper/screens/login_screen.dart';
 import 'package:spotify_helper/screens/playlist_items_screen.dart';
+import 'package:spotify_helper/screens/playlists_screen.dart';
 import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
 import 'package:spotify_helper/screens/search_for_item.dart';
 import 'package:spotify_helper/screens/sync_screen.dart';
@@ -40,7 +41,7 @@ class _AppState extends State<App> {
           ),
         ),
         home: auth.getIsUserAuthenticated
-            ? const Home()
+            ? const PlaylistsScreen() //TODO REMOVE - THIS HAS TO BE HOME
             : FutureBuilder(
                 future: auth.attemptAutoLogin(),
                 builder: (ctx, snapshot) =>
@@ -56,6 +57,7 @@ class _AppState extends State<App> {
               const SearchAllPlaylistsScreen(),
           SyncScreen.routeName: (ctx) => SyncScreen(),
           PlaylistItemsScreen.routeName: (ctx) => const PlaylistItemsScreen(),
+          PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
         },
       ),
     );

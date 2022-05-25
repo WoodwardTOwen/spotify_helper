@@ -10,22 +10,52 @@ part 'playlist_bloc_state.dart';
 class PlaylistBloc extends Bloc<PlaylistBlocEvent, PlaylistBlocState> {
   final PlaylistRepository playlistRepository = PlaylistRepository();
 
-  //We need events that handle errors and such -> not everything is through rose tinted glasses ofc
-
   PlaylistBloc() : super(PlaylistBlocLoadingState()) {
-    on<PlaylistBlocEvent>(
-      (event, emit) async {
-        if (event is MyPlaylistsFetchedEvent ||
-            event is RefreshMyPlaylistsEvent) {
-          emit(PlaylistBlocLoadingState());
-          try {
-            final playlists = await playlistRepository.getPlaylistInformation();
-            emit(PlaylistBlocLoaded(playlists: playlists));
-          } catch (e) {
-            emit(PlaylistFailureState(error: e.toString()));
-          }
+    on<MyPlaylistsFetchedEvent>(
+        ((event, emit) => _onMyPlaylistFetchedEvent(event, emit)));
+    on<RefreshMyPlaylistsEvent>(
+        ((event, emit) => _onRefreshMyPlaylistEvent(event, emit)));
+  }
+
+  void _onMyPlaylistFetchedEvent(
+      PlaylistBlocEvent event, Emitter<PlaylistBlocState> emit) async {
+    if (event is MyPlaylistsFetchedEvent && !_hasReachedMax(state)) {
+      try {
+        if (state is PlaylistBlocLoadingState) {
+          final playlists = await playlistRepository.getPlaylistInformation(
+              limit: 20, offset: 0);
+          emit(PlaylistBlocLoaded(playlists: playlists, hasReachedMax: false));
+        } else if (state is PlaylistBlocLoaded) {
+          final playlists = await playlistRepository.getPlaylistInformation(
+              offset: (state as PlaylistBlocLoaded).playlists.length,
+              limit: 20);
+          emit(playlists.isEmpty
+              ? (state as PlaylistBlocLoaded).copyWith(hasReachedMax: true)
+              : PlaylistBlocLoaded(
+                  playlists:
+                      (state as PlaylistBlocLoaded).playlists + playlists,
+                  hasReachedMax: false));
         }
-      },
-    );
+      } catch (exception) {
+        emit(PlaylistFailureState(error: exception.toString()));
+      }
+    }
+  }
+
+  void _onRefreshMyPlaylistEvent(
+      PlaylistBlocEvent event, Emitter<PlaylistBlocState> emit) async {
+    try {
+      if (state is PlaylistBlocLoaded) {
+        emit(PlaylistRefreshingState((state as PlaylistBlocLoaded).playlists));
+      }
+      final playlists =
+          await playlistRepository.getPlaylistInformation(limit: 20, offset: 0);
+      emit(PlaylistBlocLoaded(playlists: playlists, hasReachedMax: false));
+    } catch (exception) {
+      emit(PlaylistFailureState(error: exception.toString()));
+    }
   }
 }
+
+bool _hasReachedMax(PlaylistBlocState state) =>
+    state is PlaylistBlocLoaded && state.hasReachedMax;

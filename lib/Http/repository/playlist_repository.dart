@@ -11,7 +11,7 @@ class PlaylistRepository implements IPlaylistRepository {
   //TODO Offset needs working around
   @override
   Future<List<PlaylistModel>> getPlaylistInformation(
-      {int limit = 40, int offset = 0}) async {
+      {int limit = 20, int offset = 0}) async {
     try {
       final response = await client
           .get(ApiPath.getListOfPlaylists(limit: limit, offset: offset));
