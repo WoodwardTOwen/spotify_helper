@@ -8,6 +8,11 @@ A handy tool to interact with the Spotify SDK
 - Playlist and Track Interaction
 - Track Finder
 
+### Built With
+
+-Flutter
+-Spotify Web API
+
 #### Version
 
 Pre Alpha - Not in a production worthy state
