@@ -49,11 +49,10 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
     final args = ModalRoute.of(context)!.settings.arguments as TrackModel;
     return WillPopScope(
       onWillPop: () async {
-        //Provider.of<PlaylistFinderProvider>(context, listen: false)
-        //.disposeSearch();
         return true;
       },
       child: Scaffold(
+        backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
         body: FutureBuilder(
           future: _beginSearch(args.trackId, args.trackName, args.artist),
           builder: (ctx, snapshot) => snapshot.connectionState ==

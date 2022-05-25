@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_list_view.dart';
 import '../Http/bloc/playlist/playlist_bloc_bloc.dart';
 import '../models/user_model.dart';
 import '../providers/user_provider.dart';
-import '../widgets/playlist_finder_widgets/playlist_tile_grid_view.dart';
 import '../widgets/spotify_helper_drawer.dart';
 
 class PlaylistsScreen extends StatefulWidget {
@@ -154,10 +154,10 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                                         child: Text("No Playlists found!!"),
                                       )
                                     : Expanded(
-                                        child: GridView.builder(
+                                        child: ListView.separated(
                                           controller: _controller,
                                           itemBuilder: ((ctx, index) {
-                                            return PlayListTileGridView(
+                                            return PlaylistTileListView(
                                               isFiltered
                                                   ? state.getFilteredResult(
                                                       _currentUser!
@@ -165,21 +165,17 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                                                   : state.playlists[index],
                                             );
                                           }),
+                                          separatorBuilder: (context, index) {
+                                            return const Divider();
+                                          },
                                           itemCount: isFiltered
                                               ? state
                                                   .getFilteredResult(
                                                       _currentUser!.userId)
                                                   .length
                                               : state.playlists.length,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            childAspectRatio: 3 / 2,
-                                            crossAxisSpacing: 10,
-                                            mainAxisSpacing: 10,
-                                          ),
                                         ),
-                                      )
+                                      ),
                               ],
                             ),
                           ),

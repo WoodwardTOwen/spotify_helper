@@ -52,6 +52,7 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       appBar: AppBar(
         title: const Text("Search All Playlists"),
       ),
