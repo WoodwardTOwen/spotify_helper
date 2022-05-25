@@ -10,8 +10,8 @@ A handy tool to interact with the Spotify SDK
 
 ### Built With
 
--Flutter
--Spotify Web API
+- [Flutter](https://flutter.dev)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 
 #### Version
 
