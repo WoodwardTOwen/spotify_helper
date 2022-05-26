@@ -8,6 +8,7 @@ import 'package:spotify_helper/widgets/misc/network_image.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Http/services/api_path.dart';
+import '../util/helper_methods.dart';
 
 class PlaylistItemsScreen extends StatelessWidget {
   static const routeName = '/playlist-items';
@@ -21,6 +22,33 @@ class PlaylistItemsScreen extends StatelessWidget {
     }
   }
 
+  void _showDialog(BuildContext context, String currentPlaylistId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Open Spotify',
+              style: TextStyle(fontSize: 20, color: Colors.black)),
+          content: const Text('Do you wish to Open Spotify?'),
+          actions: <Widget>[
+            TextButton(
+                child: const Text('Yes'),
+                onPressed: () async {
+                  _navigateToAnotherScreen(currentPlaylistId);
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _createErrorMessage(String errorMessage) {
     return Text(errorMessage, style: const TextStyle(color: Colors.black));
   }
@@ -30,8 +58,24 @@ class PlaylistItemsScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as PlaylistModel;
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       appBar: AppBar(
-        title: const Text('Playlist Items'),
+        title: const Text('Playlist Items', style: TextStyle(fontSize: 16)),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.exit_to_app),
+              onPressed: () async {
+                try {
+                  !Platform.isIOS
+                      ? _showDialog(context, args.id)
+                      : HelperMethods.showErrorDialog(context,
+                          'The iOS version of opening Spotify is not yet supported.');
+                } catch (exception) {
+                  HelperMethods.showErrorDialog(
+                      context, "Failed to open Spotify, Please Try Again");
+                }
+              }),
+        ],
       ),
       body: BlocProvider<PlaylistTracksBloc>(
         create: (ctx) {
@@ -50,8 +94,12 @@ class PlaylistItemsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          MyNetworkImageNotCached(
-                              playlistImageUrl: args.playlistImageUrl),
+                          SizedBox(
+                            height: 350,
+                            width: 500,
+                            child: MyNetworkImageNotCached(
+                                playlistImageUrl: args.playlistImageUrl),
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -82,12 +130,11 @@ class PlaylistItemsScreen extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          if (!Platform.isIOS)
-                            ElevatedButton(
-                                child: const Text('...go to playlist'),
-                                onPressed: () =>
-                                    _navigateToAnotherScreen(args.id)),
+                        children: const <Widget>[
+                          Text(
+                            'End',
+                            style: TextStyle(color: Colors.black),
+                          )
                         ],
                       ),
                     )

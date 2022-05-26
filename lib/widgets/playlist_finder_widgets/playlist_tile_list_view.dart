@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 
 import '../../screens/playlist_items_screen.dart';
@@ -13,8 +14,11 @@ class PlaylistTileListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, PlaylistItemsScreen.routeName,
-            arguments: _currentItem);
+        pushNewScreenWithRouteSettings(
+          context,
+          screen: const PlaylistItemsScreen(),
+          settings: RouteSettings(arguments: _currentItem),
+        );
       },
       child: ListTile(
         leading: SizedBox(

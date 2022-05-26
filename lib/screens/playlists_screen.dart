@@ -5,7 +5,6 @@ import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_lis
 import '../Http/bloc/playlist/playlist_bloc_bloc.dart';
 import '../models/user_model.dart';
 import '../providers/user_provider.dart';
-import '../widgets/spotify_helper_drawer.dart';
 
 class PlaylistsScreen extends StatefulWidget {
   static const routeName = '/playlist-screen';
@@ -110,20 +109,22 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
         : Scaffold(
             backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
             appBar: AppBar(
-              title: const Text(
-                'Spotify Helper',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+              title: Text(
+                isFiltered
+                    ? "Playlists by ${_currentUser!.displayName}"
+                    : "All Saved Playlists",
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.filter),
+                  icon: const Icon(
+                    Icons.filter,
+                    size: 20,
+                  ),
                   onPressed: () => setState(() => isFiltered = !isFiltered),
                 )
               ],
             ),
-            drawer: _currentUser == null
-                ? null
-                : SpotifyHelperDrawer(user: _currentUser!),
             body: _currentUser == null
                 ? _createErrorWidget()
                 : BlocBuilder<PlaylistBloc, PlaylistBlocState>(
@@ -136,19 +137,9 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                         return RefreshIndicator(
                           onRefresh: () async => _onRefresh(),
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.only(left: 10, right: 10),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: Text(
-                                    isFiltered
-                                        ? "Playlists by ${_currentUser!.displayName}"
-                                        : "All Saved Playlists",
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 18),
-                                  ),
-                                ),
                                 playlists.isEmpty
                                     ? const Center(
                                         child: Text("No Playlists found!!"),
@@ -157,12 +148,18 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                                         child: ListView.separated(
                                           controller: _controller,
                                           itemBuilder: ((ctx, index) {
-                                            return PlaylistTileListView(
-                                              isFiltered
-                                                  ? state.getFilteredResult(
-                                                      _currentUser!
-                                                          .userId)[index]
-                                                  : state.playlists[index],
+                                            return Padding(
+                                              padding: index == 0
+                                                  ? const EdgeInsets.only(
+                                                      top: 10.0)
+                                                  : const EdgeInsets.all(0),
+                                              child: PlaylistTileListView(
+                                                isFiltered
+                                                    ? state.getFilteredResult(
+                                                        _currentUser!
+                                                            .userId)[index]
+                                                    : state.playlists[index],
+                                              ),
                                             );
                                           }),
                                           separatorBuilder: (context, index) {

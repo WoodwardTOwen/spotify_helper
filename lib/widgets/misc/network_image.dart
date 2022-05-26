@@ -32,17 +32,14 @@ class MyNetworkImageNotCached extends StatelessWidget {
       loadingBuilder: (BuildContext context, Widget child,
           ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
-        return Center(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 30),
+        return Transform.scale(
+            scale: .5,
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null
                   ? loadingProgress.cumulativeBytesLoaded /
                       loadingProgress.expectedTotalBytes!
                   : null,
-            ),
-          ),
-        );
+            ));
       },
     );
   }

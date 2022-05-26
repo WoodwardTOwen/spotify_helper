@@ -107,8 +107,6 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
                                                 .colorScheme
                                                 .secondary,
                                           ),
-
-                                          //Change colour to secondary?
                                           onPressed: () {
                                             HelperMethods.createSnackBarMessage(
                                                 context,
