@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spotify_helper/providers/playlist_finder_provider.dart';
-
 import '../../providers/user_provider.dart';
 
 class UserStatContainer extends StatelessWidget {
@@ -15,8 +13,20 @@ class UserStatContainer extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Align(alignment: Alignment.centerLeft, child: Text(statName)),
-          Align(alignment: Alignment.centerRight, child: Text(statResult)),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text(statName,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 13,
+                  ))),
+          Align(
+              alignment: Alignment.centerRight,
+              child: Text(statResult,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 13,
+                  ))),
         ],
       );
     }
@@ -27,10 +37,6 @@ class UserStatContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildStatItem("User:", user.displayName),
-          const SizedBox(
-            height: 5,
-          ),
           _buildStatItem("Based In:", user.country),
           const SizedBox(height: 5),
           _buildStatItem(

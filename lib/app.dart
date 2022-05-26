@@ -4,12 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/spotify_auth.dart';
 import 'package:spotify_helper/screens/home.dart';
 import 'package:spotify_helper/screens/login_screen.dart';
-import 'package:spotify_helper/screens/playlist_items_screen.dart';
-import 'package:spotify_helper/screens/playlists_screen.dart';
-import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
-import 'package:spotify_helper/screens/search_for_item.dart';
-import 'package:spotify_helper/screens/sync_screen.dart';
-import 'package:spotify_helper/screens/user_profile_screen.dart';
 import './screens/splash_screen.dart';
 
 class App extends StatefulWidget {
@@ -41,7 +35,7 @@ class _AppState extends State<App> {
           ),
         ),
         home: auth.getIsUserAuthenticated
-            ? const PlaylistsScreen() //TODO REMOVE - THIS HAS TO BE HOME
+            ? const Home()
             : FutureBuilder(
                 future: auth.attemptAutoLogin(),
                 builder: (ctx, snapshot) =>
@@ -49,16 +43,6 @@ class _AppState extends State<App> {
                         ? const SplashScreen()
                         : const LoginScreen(),
               ),
-        routes: {
-          Home.routeName: (ctx) => const Home(),
-          UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
-          SearchForItemScreen.routeName: (ctx) => const SearchForItemScreen(),
-          SearchAllPlaylistsScreen.routeName: (ctx) =>
-              const SearchAllPlaylistsScreen(),
-          SyncScreen.routeName: (ctx) => SyncScreen(),
-          PlaylistItemsScreen.routeName: (ctx) => const PlaylistItemsScreen(),
-          PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
-        },
       ),
     );
   }

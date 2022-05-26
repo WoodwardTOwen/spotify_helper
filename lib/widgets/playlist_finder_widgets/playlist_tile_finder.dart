@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 
+import '../misc/network_image.dart';
+
 class PlaylistTileFinder extends StatelessWidget {
   final PlaylistModel _foundPlaylistItem;
 
@@ -10,18 +12,20 @@ class PlaylistTileFinder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        _foundPlaylistItem.name,
-        style: const TextStyle(
-          color: Colors.black,
-          overflow: TextOverflow.ellipsis,
-          fontSize: 12,
+      leading: SizedBox(
+        height: 60,
+        width: 60,
+        child: MyNetworkImageNotCached(
+          playlistImageUrl: _foundPlaylistItem.playlistImageUrl,
         ),
       ),
-      trailing: CircleAvatar(
-        backgroundImage: NetworkImage(
-          _foundPlaylistItem.playlistImageUrl,
-        ),
+      title: Text(
+        _foundPlaylistItem.name,
+        style: const TextStyle(fontSize: 16),
+      ),
+      subtitle: Text(
+        _foundPlaylistItem.owner.displayName,
+        style: const TextStyle(fontSize: 12),
       ),
     );
   }

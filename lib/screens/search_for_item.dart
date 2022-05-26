@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
 import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
@@ -49,44 +50,69 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
     super.initState();
   }
 
+  void _clear() {
+    if (editingController.value.text.isNotEmpty) {
+      setState(() {
+        editingController.clear();
+        Provider.of<PlaylistFinderProvider>(context, listen: false)
+            .clearCachedSearchItems();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
-      appBar: AppBar(
-        title: const Text("Search All Playlists"),
-      ),
-      body: Center(
-        child: Column(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
+        appBar: AppBar(
+          title: const Text(
+            "Search All Playlists",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        resizeToAvoidBottomInset: false,
+        body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextField(
                 controller: editingController,
-                decoration: const InputDecoration(
+                textInputAction: TextInputAction.go,
+                onSubmitted: (value) async => _onSubmit(),
+                decoration: InputDecoration(
                     labelText: "Search",
                     hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
+                    suffixIcon: _isLoading
+                        ? Transform.scale(
+                            scale: 0.6,
+                            child: const CircularProgressIndicator(),
+                          )
+                        : IconButton(
+                            onPressed: _clear, icon: const Icon(Icons.clear)),
+                    prefixIcon: IconButton(
+                        onPressed: () => _onSubmit(),
+                        icon: const Icon(Icons.search)),
+                    border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               ),
             ),
-            ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () async =>
-                        _onSubmit(), //Still requires better error handling
-
-                child: const Text("Search")),
             Consumer<PlaylistFinderProvider>(
               builder: ((ctx, searchResults, _) => searchResults
                       .getSearchedTrackResults.isEmpty
                   ? const Expanded(
-                      child: Center(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 16),
                           child: Text(
-                        "No Data Present",
-                        style: TextStyle(color: Colors.black),
-                      )),
+                            "Hint: Search For a Track!",
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 14),
+                          ),
+                        ),
+                      ),
                     )
                   : Expanded(
                       child: ListView.builder(
@@ -98,11 +124,13 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
                                     .getSearchedTrackResults[index],
                               ),
                               onTap: () {
-                                Navigator.pushNamed(
-                                  ctx,
-                                  SearchAllPlaylistsScreen.routeName,
-                                  arguments: searchResults
-                                      .getSearchedTrackResults[index],
+                                pushNewScreenWithRouteSettings(
+                                  context,
+                                  screen: const SearchAllPlaylistsScreen(),
+                                  settings: RouteSettings(
+                                    arguments: searchResults
+                                        .getSearchedTrackResults[index],
+                                  ),
                                 );
                               },
                             )),

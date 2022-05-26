@@ -12,22 +12,30 @@ class TrackTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: SizedBox(
+        height: 40,
+        width: 40,
+        child: MyNetworkImageNotCached(
+          playlistImageUrl: _trackItem.albumImageUrl,
+        ),
+      ),
       title: Text(
         indexValue == 0
-            ? "${_trackItem.trackName} by ${_trackItem.artist}"
-            : "${indexValue.toString()}. ${_trackItem.trackName} by ${_trackItem.artist}",
+            ? _trackItem.trackName
+            : "${indexValue.toString()}. ${_trackItem.trackName}",
         style: const TextStyle(
-          color: Colors.black,
+          fontSize: 14,
           overflow: TextOverflow.ellipsis,
-          fontSize: 12,
         ),
         maxLines: 2,
       ),
-      trailing: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(40.0),
-            child: MyNetworkImage(imageUrl: _trackItem.albumImageUrl)),
+      subtitle: Text(
+        _trackItem.artist,
+        style: const TextStyle(
+          fontSize: 12,
+          overflow: TextOverflow.ellipsis,
+        ),
+        maxLines: 2,
       ),
     );
   }
