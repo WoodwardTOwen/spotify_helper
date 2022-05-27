@@ -7,6 +7,7 @@ A handy tool to interact with the Spotify SDK
 - User Profile Statistics
 - Playlist and Track Interaction
 - Track Finder
+- Modify Existing Playlists
 
 ### Built With
 
