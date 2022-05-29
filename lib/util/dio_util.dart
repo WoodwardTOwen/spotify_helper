@@ -26,7 +26,6 @@ class DioUtil {
             if (token.getAccessToken.isNotEmpty) {
               final accessToken = token.getAccessToken;
               options.headers['Authorization'] = 'Bearer $accessToken';
-              options.contentType = Headers.contentTypeHeader;
             }
           }
           return handler.next(options);

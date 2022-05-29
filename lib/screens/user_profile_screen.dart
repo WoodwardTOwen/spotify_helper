@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
-import 'package:spotify_helper/screens/settings_screen.dart';
-import 'package:spotify_helper/widgets/user_stats_widgets/user_header.dart';
+import 'package:spotify_helper/widgets/misc/generic_header.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/user_stat_container.dart';
 import '../widgets/user_stats_widgets/track_tile.dart';
 
@@ -47,23 +45,10 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context, listen: false).getUser;
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
-      appBar: AppBar(
-        title: const Text(
-          'User Profile',
-          style: TextStyle(fontSize: 16),
-        ),
-        actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.settings,
-                size: 22,
-              ),
-              onPressed: () =>
-                  pushNewScreen(context, screen: const SettingsScreen()))
-        ],
-      ),
       body: FutureBuilder(
         future: _fetchAndSet(context),
         builder: (ctx, snapshot) =>
@@ -75,7 +60,12 @@ class UserProfileScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          const UserHeader(),
+                          GenericHeader(
+                            imageUrl: user.userImageUrl,
+                            titleText: user.displayName,
+                            subtitleText: user.displayName,
+                            isUserProfile: true,
+                          ),
                           const UserStatContainer(),
                           _buildTrackHeader("Top Tracks - This Month"),
                           _buildTrackList('short_term'),

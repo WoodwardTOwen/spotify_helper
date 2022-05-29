@@ -1,9 +1,14 @@
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+import 'package:spotify_helper/Http/bloc/playlist/playlist_bloc_bloc.dart';
+import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
+import 'package:spotify_helper/screens/playlist_items_screen.dart';
+import 'package:spotify_helper/screens/playlists_screen.dart';
 import 'package:spotify_helper/util/helper_methods.dart';
-import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_heading.dart';
+import 'package:spotify_helper/widgets/misc/generic_header.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_loading_screen.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_finder.dart';
 
@@ -18,7 +23,6 @@ class SearchAllPlaylistsScreen extends StatefulWidget {
   State<SearchAllPlaylistsScreen> createState() => _SearchAllPlaylistsState();
 }
 
-//TODO Create new UI for the album color/ naming
 class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
   late PlaylistFinderProvider _playlistFinderProvider;
 
@@ -29,6 +33,33 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
 
     await Provider.of<PlaylistFinderProvider>(context, listen: false)
         .getAllPlaylistsContainingSearchItemId(itemId, itemTrack, itemArtist);
+  }
+
+  void _addNewTrack(String trackId) async {
+    Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(
+          builder: (context) => const PlaylistsScreen(
+            playlistAction: PlaylistAction.onAddTrack,
+          ),
+        ))
+        .then((value) async => {
+              await Provider.of<PlaylistFinderProvider>(context, listen: false)
+                  .postNewTrack(trackID: trackId, playlistID: value as String)
+                  .then((value) => {
+                        if (value)
+                          {
+                            HelperMethods.showGenericDialog(
+                                context, "Track has been successfully added",
+                                title: "Success!"),
+                            Navigator.of(context).pop()
+                          }
+                        else
+                          {
+                            HelperMethods.showGenericDialog(context,
+                                "Something went wrong with adding the track, please try again"),
+                          }
+                      })
+            });
   }
 
   @override
@@ -61,9 +92,12 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
               : SafeArea(
                   child: Column(
                     children: [
-                      PlaylistFinderHeading(track: args),
+                      GenericHeader(
+                          imageUrl: args.albumImageUrl,
+                          titleText: args.trackName,
+                          subtitleText: args.artist),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         child: Provider.of<PlaylistFinderProvider>(context,
                                     listen: false)
                                 .getListOfPlaylistsForDesiredTrack
@@ -107,12 +141,8 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
                                                 .colorScheme
                                                 .secondary,
                                           ),
-                                          onPressed: () {
-                                            HelperMethods.createSnackBarMessage(
-                                                context,
-                                                "Soz Mush - This is for the future:)",
-                                                isSecondaryColour: true);
-                                          },
+                                          onPressed: () async =>
+                                              _addNewTrack(args.trackId),
                                           child: const Text(
                                             'Add to Playlist',
                                             style:

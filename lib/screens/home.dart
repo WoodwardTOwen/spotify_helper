@@ -73,6 +73,7 @@ class _HomeState extends State<Home> {
                     const SearchAllPlaylistsScreen(),
                 SearchForItemScreen.routeName: (ctx) =>
                     const SearchForItemScreen(),
+                PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
               })),
       PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.music_house),
@@ -87,17 +88,18 @@ class _HomeState extends State<Home> {
                 PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
               })),
       PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.profile_circled),
-          title: ("Profile"),
-          activeColorPrimary: const Color.fromRGBO(239, 234, 216, 1),
-          inactiveColorPrimary: Colors.white38,
-          routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: UserProfileScreen.routeName,
-              routes: {
-                UserProfileScreen.routeName: (ctx) =>
-                    const PlaylistItemsScreen(),
-                SettingsScreen.routeName: (ctx) => const SettingsScreen(),
-              })),
+        icon: const Icon(CupertinoIcons.profile_circled),
+        title: ("Profile"),
+        activeColorPrimary: const Color.fromRGBO(239, 234, 216, 1),
+        inactiveColorPrimary: Colors.white38,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: UserProfileScreen.routeName,
+          routes: {
+            UserProfileScreen.routeName: (ctx) => const PlaylistItemsScreen(),
+            SettingsScreen.routeName: (ctx) => const SettingsScreen(),
+          },
+        ),
+      ),
     ];
   }
 }

@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import '../../screens/settings_screen.dart';
+import 'network_image.dart';
 
-import '../../providers/user_provider.dart';
-import '../misc/network_image.dart';
+class GenericHeader extends StatelessWidget {
+  final String imageUrl;
+  final String titleText;
+  final String subtitleText;
+  final bool isUserProfile;
 
-class UserHeader extends StatelessWidget {
-  const UserHeader({Key? key}) : super(key: key);
+  const GenericHeader(
+      {Key? key,
+      required this.imageUrl,
+      required this.titleText,
+      required this.subtitleText,
+      this.isUserProfile = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context, listen: false).getUser;
-
     return DrawerHeader(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
       child: Stack(
         children: [
+          Align(
+              alignment: Alignment.topRight + const Alignment(0.1, 0),
+              child: isUserProfile
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.settings,
+                        size: 26,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => pushNewScreen(context,
+                          screen: const SettingsScreen()),
+                    )
+                  : null),
           Align(
             alignment: Alignment.centerLeft,
             child: CircleAvatar(
@@ -27,7 +48,7 @@ class UserHeader extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(40.0),
-                    child: MyNetworkImage(imageUrl: user.userImageUrl)),
+                    child: MyNetworkImage(imageUrl: imageUrl)),
               ),
             ),
           ),
@@ -36,7 +57,7 @@ class UserHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(left: 100),
               child: Text(
-                user.displayName,
+                titleText,
                 style: Theme.of(context).textTheme.headline5,
                 softWrap: true,
                 maxLines: 1,
@@ -51,7 +72,7 @@ class UserHeader extends StatelessWidget {
                   0.4,
                 ),
             child: Text(
-              user.email,
+              subtitleText,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),

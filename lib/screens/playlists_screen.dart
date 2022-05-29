@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_list_view.dart';
 import '../Http/bloc/playlist/playlist_bloc_bloc.dart';
 import '../models/user_model.dart';
@@ -8,8 +9,11 @@ import '../providers/user_provider.dart';
 
 class PlaylistsScreen extends StatefulWidget {
   static const routeName = '/playlist-screen';
+  final PlaylistAction playlistAction;
 
-  const PlaylistsScreen({Key? key}) : super(key: key);
+  const PlaylistsScreen(
+      {Key? key, this.playlistAction = PlaylistAction.onGenericLoad})
+      : super(key: key);
 
   static Widget create() {
     return BlocProvider<PlaylistBloc>(
@@ -108,23 +112,26 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
           )
         : Scaffold(
             backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
-            appBar: AppBar(
-              title: Text(
-                isFiltered
-                    ? "Playlists by ${_currentUser!.displayName}"
-                    : "All Saved Playlists",
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.filter,
-                    size: 20,
+            appBar: widget.playlistAction != PlaylistAction.onGenericLoad
+                ? null
+                : AppBar(
+                    title: Text(
+                      isFiltered
+                          ? "Playlists by ${_currentUser!.displayName}"
+                          : "All Saved Playlists",
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    actions: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.filter,
+                          size: 20,
+                        ),
+                        onPressed: () =>
+                            setState(() => isFiltered = !isFiltered),
+                      )
+                    ],
                   ),
-                  onPressed: () => setState(() => isFiltered = !isFiltered),
-                )
-              ],
-            ),
             body: _currentUser == null
                 ? _createErrorWidget()
                 : BlocBuilder<PlaylistBloc, PlaylistBlocState>(
@@ -154,18 +161,30 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                                                       top: 10.0)
                                                   : const EdgeInsets.all(0),
                                               child: PlaylistTileListView(
-                                                isFiltered
+                                                isFiltered ||
+                                                        widget.playlistAction ==
+                                                            PlaylistAction
+                                                                .onAddTrack
                                                     ? state.getFilteredResult(
                                                         _currentUser!
                                                             .userId)[index]
                                                     : state.playlists[index],
+                                                playlistAction:
+                                                    widget.playlistAction !=
+                                                            PlaylistAction
+                                                                .onGenericLoad
+                                                        ? widget.playlistAction
+                                                        : PlaylistAction
+                                                            .onGenericLoad,
                                               ),
                                             );
                                           }),
                                           separatorBuilder: (context, index) {
                                             return const Divider();
                                           },
-                                          itemCount: isFiltered
+                                          itemCount: isFiltered ||
+                                                  widget.playlistAction ==
+                                                      PlaylistAction.onAddTrack
                                               ? state
                                                   .getFilteredResult(
                                                       _currentUser!.userId)
