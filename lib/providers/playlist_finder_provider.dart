@@ -1,17 +1,10 @@
 import 'dart:async';
-
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/Http/repository/playlist_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 
 import '../models/track_model.dart';
-
-//TODO Create Error handling for an on back pressed scenario
-//https://blog.codemagic.io/flutter-tutorial-app-arhitecture-beginners/
-//Need to change process to a stream so i can kill off the process - the loading page can then be removed with a loading spinner instead
-//https://stackoverflow.com/questions/17552757/is-there-any-way-to-cancel-a-dart-future
 
 class PlaylistFinderProvider with ChangeNotifier {
   int playlistCount = 0, offset = 0;
@@ -51,7 +44,11 @@ class PlaylistFinderProvider with ChangeNotifier {
             50)); //Need a way to edit so this is recursive to get every possible result
   }
 
-  //Double check that the searched term isn't the same as the previous - not point making the extra call
+  Future<bool> postNewTrack(
+          {required String trackID, required String playlistID}) async =>
+      await playlistRepository.postNewTrackToPlaylist(
+          trackID: trackID, playlistID: playlistID);
+
   Future<void> getSearchResults(String searchedForValue) async {
     clearCachedSearchItems();
     _searchedTrackResults.addAll(

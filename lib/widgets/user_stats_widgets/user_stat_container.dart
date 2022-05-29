@@ -44,7 +44,10 @@ class UserStatContainer extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          _buildStatItem("Playlist Count:", "TO BE IMPLEMENTED"),
+          _buildStatItem(
+            "Playlist Count:",
+            "Future Implementation",
+          ),
         ],
       ),
     );

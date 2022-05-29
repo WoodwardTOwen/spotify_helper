@@ -32,17 +32,16 @@ class PlaylistItemsScreen extends StatelessWidget {
           content: const Text('Do you wish to Open Spotify?'),
           actions: <Widget>[
             TextButton(
+                child: const Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
                 child: const Text('Yes'),
                 onPressed: () async {
                   _navigateToAnotherScreen(currentPlaylistId);
                   Navigator.of(context).pop();
                 }),
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
           ],
         );
       },
@@ -60,7 +59,7 @@ class PlaylistItemsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       appBar: AppBar(
-        title: const Text('Playlist Items', style: TextStyle(fontSize: 16)),
+        title: Text(args.name, style: const TextStyle(fontSize: 16)),
         actions: [
           IconButton(
               icon: const Icon(Icons.exit_to_app),
@@ -68,10 +67,10 @@ class PlaylistItemsScreen extends StatelessWidget {
                 try {
                   !Platform.isIOS
                       ? _showDialog(context, args.id)
-                      : HelperMethods.showErrorDialog(context,
+                      : HelperMethods.showGenericDialog(context,
                           'The iOS version of opening Spotify is not yet supported.');
                 } catch (exception) {
-                  HelperMethods.showErrorDialog(
+                  HelperMethods.showGenericDialog(
                       context, "Failed to open Spotify, Please Try Again");
                 }
               }),
@@ -103,16 +102,6 @@ class PlaylistItemsScreen extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            args.name,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
                           ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -125,19 +114,6 @@ class PlaylistItemsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Text(
-                            'End',
-                            style: TextStyle(color: Colors.black),
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 );
               } else if (state is PlaylistTracksFailure) {

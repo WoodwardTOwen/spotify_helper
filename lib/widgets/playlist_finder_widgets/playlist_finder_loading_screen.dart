@@ -19,6 +19,7 @@ class PlaylistFinderLoadingScreen extends StatelessWidget {
             child: Text(
               "Searching for: $_trackName",
               style: const TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
             ),
           ),
           const Text(

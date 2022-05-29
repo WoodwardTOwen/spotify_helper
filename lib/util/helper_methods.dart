@@ -40,7 +40,7 @@ class HelperMethods {
     );
   }
 
-  static void showErrorDialog(BuildContext context, String errorMessage,
+  static void showGenericDialog(BuildContext context, String errorMessage,
       {String title = "Whoops..."}) {
     showDialog(
       context: context,

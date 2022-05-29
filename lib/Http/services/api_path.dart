@@ -9,6 +9,8 @@ class ApiPath {
     'user-modify-playback-state',
     'user-read-playback-state',
     'playlist-read-collaborative',
+    'playlist-modify-public',
+    'playlist-modify-private',
   ];
 
   static String get scopesString => _scopes.join(',');
@@ -25,18 +27,36 @@ class ApiPath {
 
   //Search - Could potentially expand the limit on these calls but for now keep it at 10
   static String searchForTrack({required String searchedTrack}) =>
-      "https://api.spotify.com/v1/search?q=$searchedTrack&type=track";
+      "$baseUrl/v1/search?q=$searchedTrack&type=track";
 
   static String searchForArtist({required String searchedArtist}) =>
-      "https://api.spotify.com/v1/search?q=$searchedArtist&type=artist";
+      "$baseUrl/v1/search?q=$searchedArtist&type=artist";
 
   //Playlists
   static String getListOfPlaylists({required int offset, required int limit}) =>
-      'https://api.spotify.com/v1/me/playlists?limit=$limit&offset=$offset';
+      '$baseUrl/v1/me/playlists?limit=$limit&offset=$offset';
 
   static String reRouteToPlaylistInApp(String playlistId) {
     return 'spotify:playlist:$playlistId';
   }
+
+  //Post Request
+  static Map<String, Object> createUriForSpotify(String trackID,
+      {int position = -1}) {
+    if (position != 1) {
+      return {
+        "uris": ["spotify:track:$trackID"],
+      };
+    } else {
+      return {
+        "uris": ["spotify:track:$trackID"],
+        "position": position,
+      };
+    }
+  }
+
+  static String postNewTracktoPlaylist({required String playlistID}) =>
+      "$baseUrl/v1/playlists/$playlistID/tracks";
 
   //Tracks
   static String getListOfTracksByLimitAndOffset({
@@ -44,7 +64,7 @@ class ApiPath {
     required int limit,
     required String playlistId,
   }) =>
-      "https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=$limit&offset=$offset";
+      "$baseUrl/v1/playlists/$playlistId/tracks?limit=$limit&offset=$offset";
 
   //Authorization
   static String requestToken = '$baseUrl/api/token';
