@@ -20,10 +20,6 @@ abstract class PlaylistWithData extends PlaylistBlocState {
   List<PlaylistModel> getFilteredResult(String userId) =>
       playlists.where((playlist) => playlist.owner.userId == userId).toList();
 
-  String getCurrentPlaylistName(String id) {
-    return playlists.firstWhere((currentItem) => currentItem.id == id).name;
-  }
-
   @override
   List<Object> get props => [playlists];
 }
