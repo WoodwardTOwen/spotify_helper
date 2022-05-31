@@ -33,13 +33,14 @@ class MyNetworkImageNotCached extends StatelessWidget {
           ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
         return Transform.scale(
-            scale: .5,
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
-            ));
+          scale: .5,
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
       },
     );
   }

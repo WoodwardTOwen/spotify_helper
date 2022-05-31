@@ -42,24 +42,28 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
             playlistAction: PlaylistAction.onAddTrack,
           ),
         ))
-        .then((value) async => {
-              await Provider.of<PlaylistFinderProvider>(context, listen: false)
-                  .postNewTrack(trackID: trackId, playlistID: value as String)
-                  .then((value) => {
-                        if (value)
-                          {
-                            HelperMethods.showGenericDialog(
-                                context, "Track has been successfully added",
-                                title: "Success!"),
-                            Navigator.of(context).pop()
-                          }
-                        else
-                          {
-                            HelperMethods.showGenericDialog(context,
-                                "Something went wrong with adding the track, please try again"),
-                          }
-                      })
-            });
+        .then(
+          (value) async => {
+            await Provider.of<PlaylistFinderProvider>(context, listen: false)
+                .postNewTrack(trackID: trackId, playlistID: value as String)
+                .then(
+                  (value) => {
+                    if (value)
+                      {
+                        HelperMethods.showGenericDialog(
+                            context, "Track has been successfully added",
+                            title: "Success!"),
+                        Navigator.of(context).pop()
+                      }
+                    else
+                      {
+                        HelperMethods.showGenericDialog(context,
+                            "Something went wrong with adding the track, please try again"),
+                      }
+                  },
+                ),
+          },
+        );
   }
 
   @override

@@ -7,6 +7,7 @@ import 'package:spotify_helper/providers/playlist_finder_provider.dart';
 
 import 'package:spotify_helper/providers/spotify_auth.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
+import 'package:spotify_helper/providers/user_stats_provider.dart';
 import 'app.dart';
 
 Future<void> main() async {
@@ -38,6 +39,9 @@ class SpotifyHelper extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => PlaylistFinderProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => UserStatsProvider(),
         ),
       ],
       child: const App(),

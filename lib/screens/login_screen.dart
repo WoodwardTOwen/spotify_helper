@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
