@@ -20,12 +20,12 @@ class SearchForItemScreen extends StatefulWidget {
  */
 
 class _SearchForItemScreenState extends State<SearchForItemScreen> {
-  TextEditingController editingController = TextEditingController();
+  final TextEditingController _editingController = TextEditingController();
   bool _isLoading = false;
 
   void _onSubmit() {
     //Need to validate input of the submit
-    if (editingController.text.isEmpty) {
+    if (_editingController.text.isEmpty) {
       return;
     }
 
@@ -35,7 +35,7 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
     });
 
     Provider.of<PlaylistFinderProvider>(context, listen: false)
-        .getSearchResults(editingController.text)
+        .getSearchResults(_editingController.text)
         .then((value) {
       setState(() {
         _isLoading = false;
@@ -51,9 +51,9 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
   }
 
   void _clear() {
-    if (editingController.value.text.isNotEmpty) {
+    if (_editingController.value.text.isNotEmpty) {
       setState(() {
-        editingController.clear();
+        _editingController.clear();
         Provider.of<PlaylistFinderProvider>(context, listen: false)
             .clearCachedSearchItems();
       });
@@ -78,7 +78,7 @@ class _SearchForItemScreenState extends State<SearchForItemScreen> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextField(
-                controller: editingController,
+                controller: _editingController,
                 textInputAction: TextInputAction.go,
                 onSubmitted: (value) async => _onSubmit(),
                 decoration: InputDecoration(

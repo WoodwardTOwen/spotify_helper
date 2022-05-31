@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/user_provider.dart';
+import 'package:spotify_helper/providers/user_stats_provider.dart';
 import 'package:spotify_helper/widgets/misc/generic_header.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/user_stat_container.dart';
-import '../widgets/user_stats_widgets/track_tile.dart';
+import 'package:spotify_helper/widgets/user_stats_widgets/user_stat_track_list.dart';
 
 class UserProfileScreen extends StatelessWidget {
   static const routeName = '/user-profile-screen';
@@ -11,7 +12,7 @@ class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
 
   Future<void> _fetchAndSet(BuildContext context) async {
-    await Provider.of<UserProvider>(context, listen: false)
+    await Provider.of<UserStatsProvider>(context, listen: false)
         .newFetchUsersTopItems();
   }
 
@@ -24,21 +25,6 @@ class UserProfileScreen extends StatelessWidget {
           text,
           style: const TextStyle(color: Colors.black, fontSize: 21),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTrackList(String timeRange) {
-    return Consumer<UserProvider>(
-      builder: (ctx, data, _) => ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemBuilder: ((ctx, index) => TrackTile(
-              trackItem: data.getUserTopTracksMap[timeRange]![index],
-              indexValue: index + 1,
-            )),
-        itemCount: data.getUserTopTracksMap[timeRange]!.length,
       ),
     );
   }
@@ -68,11 +54,17 @@ class UserProfileScreen extends StatelessWidget {
                           ),
                           const UserStatContainer(),
                           _buildTrackHeader("Top Tracks - This Month"),
-                          _buildTrackList('short_term'),
+                          const UserStatTrackList(
+                            trackKey: UserStatsProvider.shortTerm,
+                          ),
                           _buildTrackHeader("Top Tracks - Past 6 Months"),
-                          _buildTrackList('medium_term'),
+                          const UserStatTrackList(
+                            trackKey: UserStatsProvider.mediumTerm,
+                          ),
                           _buildTrackHeader("Top Tracks - All Time"),
-                          _buildTrackList('long_term'),
+                          const UserStatTrackList(
+                            trackKey: UserStatsProvider.longTerm,
+                          ),
                         ],
                       ),
                     ),
