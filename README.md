@@ -1,6 +1,6 @@
 # Spotify Helper
 
-A handy tool to interact with the Spotify SDK
+A handy tool to interact with the Spotify SDK/ Web API
 
 ### Current Features
 
@@ -13,6 +13,7 @@ A handy tool to interact with the Spotify SDK
 
 - [Flutter](https://flutter.dev)
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
+- [Spotify SDK](https://pub.dev/packages/spotify_sdk)
 
 #### Version
 
