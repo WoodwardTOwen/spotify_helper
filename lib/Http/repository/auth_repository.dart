@@ -7,7 +7,7 @@ import '../services/api_path.dart';
 class AuthRepository implements IAuthRepository {
   @override
   Future<String> requestSpotifyToken() async {
-    return await SpotifySdk.getAuthenticationToken(
+    return await SpotifySdk.getAccessToken(
         clientId: dotenv.env['CLIENT_ID'].toString(),
         redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
         scope: ApiPath.scopesString);

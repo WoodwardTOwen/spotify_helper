@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-import 'package:spotify_helper/Http/bloc/playlist/playlist_bloc_bloc.dart';
 import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
-import 'package:spotify_helper/screens/playlist_items_screen.dart';
 import 'package:spotify_helper/screens/playlists_screen.dart';
 import 'package:spotify_helper/util/helper_methods.dart';
 import 'package:spotify_helper/widgets/misc/generic_header.dart';

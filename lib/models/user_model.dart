@@ -11,24 +11,22 @@ class UserModel extends Equatable {
   final String userImageUrl;
   final String userHref;
   final String country;
+  final String product;
 
-  const UserModel({
-    required this.userId,
-    required this.displayName,
-    required this.uri,
-    required this.email,
-    required this.followers,
-    required this.userImageUrl,
-    required this.userHref,
-    this.country = "N/A",
-  });
+  const UserModel(
+      {required this.userId,
+      required this.displayName,
+      required this.uri,
+      required this.email,
+      required this.followers,
+      required this.userImageUrl,
+      required this.userHref,
+      this.country = "N/A",
+      this.product = "Free"});
 
   String get getDisplayName => displayName;
 
-  //Might need some checks in here -> Decoding?
-
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    //if (json == null) return null;
     return UserModel(
       userId: json['id'],
       displayName: json['display_name'],
@@ -43,10 +41,10 @@ class UserModel extends Equatable {
           ? ""
           : json['images'][0]['url'],
       country: json['country'] ?? "N/A",
+      product: json['product'] ?? "Free",
     );
   }
 
-  //toJson method may need altering a tad
   Map<String, dynamic> toJson() => {
         'id': userId,
         'display_name': displayName,
@@ -59,7 +57,8 @@ class UserModel extends Equatable {
         'images': [
           {'url': userImageUrl}
         ],
-        'href': userHref
+        'href': userHref,
+        'free': product,
       };
 
   @override

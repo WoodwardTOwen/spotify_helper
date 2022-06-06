@@ -49,7 +49,7 @@ class UserProfileScreen extends StatelessWidget {
                           GenericHeader(
                             imageUrl: user.userImageUrl,
                             titleText: user.displayName,
-                            subtitleText: user.displayName,
+                            subtitleText: "${user.product} member",
                             isUserProfile: true,
                           ),
                           const UserStatContainer(),
