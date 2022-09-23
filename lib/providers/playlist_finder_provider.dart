@@ -77,7 +77,7 @@ class PlaylistFinderProvider with ChangeNotifier {
         var isFound = await fetchAndCompare(
             searchItemId, searchItemTrack, searchItemArtist);
 
-        if ((isFound || playlistCount == 0 && isSearchCancelled != true)) {
+        if (isFound || (playlistCount == 0 && isSearchCancelled != true)) {
           _listOfUserPlaylists.removeAt(0);
           _resetCounters();
           if (_listOfUserPlaylists.isEmpty) {
