@@ -9,6 +9,7 @@ import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_l
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_finder.dart';
 
 import '../models/track_model.dart';
+import '../providers/tracks_provider.dart';
 
 class SearchAllPlaylistsScreen extends StatefulWidget {
   static const routeName = '/search-all-playlists';
@@ -40,7 +41,7 @@ class _SearchAllPlaylistsState extends State<SearchAllPlaylistsScreen> {
         ))
         .then(
           (value) async => {
-            await Provider.of<PlaylistFinderProvider>(context, listen: false)
+            await Provider.of<TrackProvider>(context, listen: false)
                 .postNewTrack(trackID: trackId, playlistID: value as String)
                 .then(
                   (value) => {

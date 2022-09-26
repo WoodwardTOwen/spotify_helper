@@ -1,0 +1,41 @@
+import 'package:dio/dio.dart';
+import 'package:spotify_helper/Http/repository/interface/ITrackRepository.dart';
+import 'package:spotify_helper/models/track_details_model.dart';
+
+import '../../util/dio_util.dart';
+import '../services/api_path.dart';
+
+class TrackRepository implements ITrackRepository {
+  final client = DioUtil().getClient;
+
+  @override
+  Future<bool> postNewTrackToPlaylist(
+      {required String trackID, required String playlistID}) async {
+    try {
+      final response = await client.post(
+          ApiPath.postNewTracktoPlaylist(playlistID: playlistID),
+          options: Options(contentType: Headers.jsonContentType),
+          data: ApiPath.createUriForSpotify(trackID));
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception.toString());
+      return false;
+    }
+  }
+
+  @override
+  Future<TrackDetailsModel> getTrackById({required String trackId}) async {
+    try {
+      final response = await client.get(ApiPath.getTrackById(trackId: trackId));
+      return TrackDetailsModel.fromJson(response.data);
+      //TODO Need to map the response here
+    } catch (exception) {
+      rethrow;
+    }
+  }
+}

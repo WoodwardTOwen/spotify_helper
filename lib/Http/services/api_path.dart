@@ -55,9 +55,6 @@ class ApiPath {
     }
   }
 
-  static String postNewTracktoPlaylist({required String playlistID}) =>
-      "$baseUrl/v1/playlists/$playlistID/tracks";
-
   //Tracks
   static String getListOfTracksByLimitAndOffset({
     required int offset,
@@ -65,6 +62,12 @@ class ApiPath {
     required String playlistId,
   }) =>
       "$baseUrl/v1/playlists/$playlistId/tracks?limit=$limit&offset=$offset";
+
+  static String postNewTracktoPlaylist({required String playlistID}) =>
+      "$baseUrl/v1/playlists/$playlistID/tracks";
+
+  static String getTrackById({required String trackId}) =>
+      "$baseUrl/v1/tracks/$trackId";
 
   //Authorization
   static String requestToken = '$baseUrl/api/token';

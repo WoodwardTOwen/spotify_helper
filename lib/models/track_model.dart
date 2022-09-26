@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+
+import '../util/helper_methods.dart';
 
 class TrackModel extends Equatable {
   final String trackId;
@@ -10,8 +14,8 @@ class TrackModel extends Equatable {
   const TrackModel(
       {required this.trackId,
       required this.trackName,
-      required this.artist,
-      required this.albumImageUrl});
+      this.artist = "",
+      this.albumImageUrl = ""});
 
   factory TrackModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -25,7 +29,7 @@ class TrackModel extends Equatable {
     return TrackModel(
       trackId: json['id'] ?? "",
       trackName: json['name'] ?? "",
-      artist: json['artists'][0]['name'] ?? "",
+      artist: HelperMethods.concatingArtists(json['artists']),
       albumImageUrl: json['album']['images'][0]['url'] ?? "",
     );
   }

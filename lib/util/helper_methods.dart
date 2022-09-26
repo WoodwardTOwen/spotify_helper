@@ -63,4 +63,12 @@ class HelperMethods {
       },
     );
   }
+
+  static String concatingArtists(List<dynamic> jsonArtists) {
+    if (jsonArtists.length <= 1) return jsonArtists[0]['name'];
+    List<String> artists = jsonArtists
+        .map((currentArtist) => currentArtist['name'] as String)
+        .toList();
+    return artists.join(', ');
+  }
 }
