@@ -13,38 +13,31 @@ class TrackTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => pushNewScreenWithRouteSettings(
-        context,
-        screen: const TrackDetailPage(),
-        settings: RouteSettings(arguments: _trackItem.trackId),
+    return ListTile(
+      leading: SizedBox(
+        height: 40,
+        width: 40,
+        child: MyNetworkImageNotCached(
+          playlistImageUrl: _trackItem.albumImageUrl,
+        ),
       ),
-      child: ListTile(
-        leading: SizedBox(
-          height: 40,
-          width: 40,
-          child: MyNetworkImageNotCached(
-            playlistImageUrl: _trackItem.albumImageUrl,
-          ),
+      title: Text(
+        indexValue == 0
+            ? _trackItem.trackName
+            : "${indexValue.toString()}. ${_trackItem.trackName}",
+        style: const TextStyle(
+          fontSize: 14,
+          overflow: TextOverflow.ellipsis,
         ),
-        title: Text(
-          indexValue == 0
-              ? _trackItem.trackName
-              : "${indexValue.toString()}. ${_trackItem.trackName}",
-          style: const TextStyle(
-            fontSize: 14,
-            overflow: TextOverflow.ellipsis,
-          ),
-          maxLines: 2,
+        maxLines: 2,
+      ),
+      subtitle: Text(
+        _trackItem.artist,
+        style: const TextStyle(
+          fontSize: 12,
+          overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text(
-          _trackItem.artist,
-          style: const TextStyle(
-            fontSize: 12,
-            overflow: TextOverflow.ellipsis,
-          ),
-          maxLines: 2,
-        ),
+        maxLines: 2,
       ),
     );
   }

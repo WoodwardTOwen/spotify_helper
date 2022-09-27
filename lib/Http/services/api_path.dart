@@ -69,6 +69,9 @@ class ApiPath {
   static String getTrackById({required String trackId}) =>
       "$baseUrl/v1/tracks/$trackId";
 
+  static String getAudioFeaturesById({required String trackId}) =>
+      "$baseUrl/v1/audio-features/$trackId";
+
   //Authorization
   static String requestToken = '$baseUrl/api/token';
 }

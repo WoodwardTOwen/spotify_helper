@@ -1,11 +1,8 @@
 import 'package:spotify_helper/models/track_model.dart';
-
 import '../util/helper_methods.dart';
 import 'album_model.dart';
 
 class TrackDetailsModel extends TrackModel {
-  //TODO Can create an album object to make the object even leaner
-
   final int popularity;
   final String trackSpotifyUri;
   final AlbumModel album;
@@ -36,6 +33,8 @@ class TrackDetailsModel extends TrackModel {
     );
   }
 
+  //TODO
+  //TODO
   //TODO
 
   @override

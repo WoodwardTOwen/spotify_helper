@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:spotify_helper/Http/repository/interface/ITrackRepository.dart';
+import 'package:spotify_helper/models/track_audio_features_model.dart';
 import 'package:spotify_helper/models/track_details_model.dart';
 
 import '../../util/dio_util.dart';
@@ -33,7 +34,18 @@ class TrackRepository implements ITrackRepository {
     try {
       final response = await client.get(ApiPath.getTrackById(trackId: trackId));
       return TrackDetailsModel.fromJson(response.data);
-      //TODO Need to map the response here
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TrackAudioFeaturesModel> getTrackFeaturesById(
+      {required String trackId}) async {
+    try {
+      final response =
+          await client.get(ApiPath.getAudioFeaturesById(trackId: trackId));
+      return TrackAudioFeaturesModel.fromJson(response.data);
     } catch (exception) {
       rethrow;
     }

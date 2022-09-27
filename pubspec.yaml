@@ -49,6 +49,7 @@ dependencies:
   persistent_bottom_nav_bar: any
   settings_ui: any
   app_settings: ^4.1.6
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:

@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/Http/bloc/playlist_tracks/bloc/playlist_tracks_bloc.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
+import 'package:spotify_helper/screens/track_details_screen.dart';
 import 'package:spotify_helper/widgets/misc/network_image.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -106,8 +108,16 @@ class PlaylistItemsScreen extends StatelessWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
-                            itemBuilder: ((ctx, index) => TrackTile(
-                                  trackItem: state.tracks[index],
+                            itemBuilder: ((ctx, index) => GestureDetector(
+                                  child: TrackTile(
+                                    trackItem: state.tracks[index],
+                                  ),
+                                  onTap: () => pushNewScreenWithRouteSettings(
+                                    context,
+                                    screen: const TrackDetailPage(),
+                                    settings: RouteSettings(
+                                        arguments: state.tracks[index].trackId),
+                                  ),
                                 )),
                             itemCount: state.tracks.length,
                           ),
