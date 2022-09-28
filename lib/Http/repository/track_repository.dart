@@ -40,12 +40,40 @@ class TrackRepository implements ITrackRepository {
   }
 
   @override
+  Future<List<String>> getArtistById({required String artistId}) async {
+    try {
+      final response =
+          await client.get(ApiPath.getArtistById(artistId: artistId));
+      return List<String>.from(response.data['genres']);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<TrackAudioFeaturesModel> getTrackFeaturesById(
       {required String trackId}) async {
     try {
       final response =
           await client.get(ApiPath.getAudioFeaturesById(trackId: trackId));
       return TrackAudioFeaturesModel.fromJson(response.data);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<TrackDetailsModel>> getRecommendedTrack(
+      {required String artistId,
+      required String trackId,
+      required String genres}) async {
+    try {
+      final response = await client.get(ApiPath.getRecommendations(
+          trackId: trackId, artistId: artistId, artistGenre: genres));
+      final list = response.data['tracks']
+          .map((item) => TrackDetailsModel.fromJson(item))
+          .toList();
+      return List<TrackDetailsModel>.from(list);
     } catch (exception) {
       rethrow;
     }

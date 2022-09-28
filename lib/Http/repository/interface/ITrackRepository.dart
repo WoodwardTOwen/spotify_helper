@@ -7,6 +7,13 @@ abstract class ITrackRepository {
 
   Future<TrackDetailsModel> getTrackById({required String trackId});
 
+  Future<List<String>> getArtistById({required String artistId});
+
   Future<TrackAudioFeaturesModel> getTrackFeaturesById(
       {required String trackId});
+
+  Future<List<TrackDetailsModel>> getRecommendedTrack(
+      {required String artistId,
+      required String trackId,
+      required String genres});
 }

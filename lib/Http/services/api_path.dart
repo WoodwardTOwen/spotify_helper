@@ -56,11 +56,16 @@ class ApiPath {
   }
 
   //Artists
-  static String getArtistById({required artistId}) =>
+  static String getArtistById({required String artistId}) =>
       "$baseUrl/v1/artists/$artistId";
 
   //Recommendations API
-  static String getRecommendations() => "$baseUrl/v1/recommendations";
+  static String getRecommendations(
+          {required String trackId,
+          required String artistId,
+          required String artistGenre,
+          int limit = 5}) =>
+      "$baseUrl/v1/recommendations?seed_artists=$artistId&seed_genres=$artistGenre&seed_tracks=$trackId&limit=$limit";
 
   //Tracks
   static String getListOfTracksByLimitAndOffset({
