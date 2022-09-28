@@ -92,36 +92,40 @@ class PlaylistItemsScreen extends StatelessWidget {
                 return CustomScrollView(
                   slivers: <Widget>[
                     SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 350,
-                            width: 500,
-                            child: MyNetworkImageNotCached(
-                                playlistImageUrl: args.playlistImageUrl),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemBuilder: ((ctx, index) => GestureDetector(
-                                  child: TrackTile(
-                                    trackItem: state.tracks[index],
-                                  ),
-                                  onTap: () => pushNewScreenWithRouteSettings(
-                                    context,
-                                    screen: const TrackDetailPage(),
-                                    settings: RouteSettings(
-                                        arguments: state.tracks[index].trackId),
-                                  ),
-                                )),
-                            itemCount: state.tracks.length,
-                          ),
-                        ],
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 125,
+                              width: 125,
+                              child: MyNetworkImageNotCached(
+                                  playlistImageUrl: args.playlistImageUrl),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              itemBuilder: ((ctx, index) => GestureDetector(
+                                    child: TrackTile(
+                                      trackItem: state.tracks[index],
+                                    ),
+                                    onTap: () => pushNewScreenWithRouteSettings(
+                                      context,
+                                      screen: const TrackDetailPage(),
+                                      settings: RouteSettings(
+                                          arguments:
+                                              state.tracks[index].trackId),
+                                    ),
+                                  )),
+                              itemCount: state.tracks.length,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

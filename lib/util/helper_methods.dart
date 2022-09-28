@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -71,4 +73,9 @@ class HelperMethods {
         .toList();
     return artists.join(', ');
   }
+
+  static List<String> filterListForArtistId(List<dynamic> jsonArtists) =>
+      jsonArtists
+          .map((currentArtist) => currentArtist['id'] as String)
+          .toList();
 }

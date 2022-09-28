@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/models/track_model.dart';
-import 'package:spotify_helper/screens/track_details_screen.dart';
 import 'package:spotify_helper/widgets/misc/network_image.dart';
 
 class TrackTile extends StatelessWidget {
@@ -29,7 +27,7 @@ class TrackTile extends StatelessWidget {
           fontSize: 14,
           overflow: TextOverflow.ellipsis,
         ),
-        maxLines: 2,
+        maxLines: 1,
       ),
       subtitle: Text(
         _trackItem.artist,
@@ -37,7 +35,7 @@ class TrackTile extends StatelessWidget {
           fontSize: 12,
           overflow: TextOverflow.ellipsis,
         ),
-        maxLines: 2,
+        maxLines: 1,
       ),
     );
   }

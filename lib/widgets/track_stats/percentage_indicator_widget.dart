@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:spotify_helper/models/track_audio_features_model.dart';
 
 /*
@@ -9,25 +9,38 @@ For now just keeping it simple
 
 class PercentageIndicatorWidget extends StatelessWidget {
   final TrackAudioFeaturesModel trackAudioFeaturesModel;
+  final int popularity;
 
-  const PercentageIndicatorWidget(
-      {Key? key, required this.trackAudioFeaturesModel})
-      : super(key: key);
+  const PercentageIndicatorWidget({
+    Key? key,
+    required this.trackAudioFeaturesModel,
+    required this.popularity,
+  }) : super(key: key);
 
   Widget _buildCircularWidget(
-      double radius, int percentageValue, String statTitle) {
+      int percentageValue, String statTitle, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CircularPercentIndicator(
-            radius: radius,
-            lineWidth: 4.0,
-            percent: percentageValue / 100,
-            center: Text("$percentageValue%"),
-            progressColor: _caclulateColourForPercentile(percentageValue),
+          Container(
+            margin: const EdgeInsets.only(right: 5),
+            child: Text(
+              statTitle,
+              style: const TextStyle(color: Colors.black54, fontSize: 12),
+            ),
           ),
-          Text(statTitle),
+          Align(
+            alignment: Alignment.centerRight,
+            child: LinearPercentIndicator(
+              width: MediaQuery.of(context).size.width / 2,
+              lineHeight: 8.0,
+              linearStrokeCap: LinearStrokeCap.roundAll,
+              percent: percentageValue / 100,
+              progressColor: _caclulateColourForPercentile(percentageValue),
+            ),
+          ),
         ],
       ),
     );
@@ -50,25 +63,26 @@ class PercentageIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            padding: const EdgeInsets.all(15.0),
-            child: _buildCircularWidget(45, 59, "Popularity")),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildCircularWidget(
-                30, (trackAudioFeaturesModel.energy * 100).toInt(), "Energy"),
-            _buildCircularWidget(
-                30,
-                (trackAudioFeaturesModel.danceability * 100).toInt(),
-                "Danceability"),
-            _buildCircularWidget(
-                30, (trackAudioFeaturesModel.valence * 100).toInt(), "valence"),
-          ],
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildCircularWidget((trackAudioFeaturesModel.energy * 100).toInt(),
+              "Energy", context),
+          _buildCircularWidget(
+              (trackAudioFeaturesModel.danceability * 100).toInt(),
+              "Danceability",
+              context),
+          _buildCircularWidget((trackAudioFeaturesModel.valence * 100).toInt(),
+              "Valence", context),
+          _buildCircularWidget(
+            popularity,
+            "Track Popularity",
+            context,
+          ),
+        ],
+      ),
     );
   }
 }

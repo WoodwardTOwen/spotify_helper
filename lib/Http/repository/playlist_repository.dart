@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:spotify_helper/util/dio_util.dart';
-
 import '../../models/playlist_model.dart';
 import '../../models/track_model.dart';
 import '../services/api_path.dart';

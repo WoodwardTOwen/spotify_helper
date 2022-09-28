@@ -55,6 +55,13 @@ class ApiPath {
     }
   }
 
+  //Artists
+  static String getArtistById({required artistId}) =>
+      "$baseUrl/v1/artists/$artistId";
+
+  //Recommendations API
+  static String getRecommendations() => "$baseUrl/v1/recommendations";
+
   //Tracks
   static String getListOfTracksByLimitAndOffset({
     required int offset,

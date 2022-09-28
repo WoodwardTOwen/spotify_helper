@@ -13,11 +13,15 @@ class TrackDetailsModel extends TrackModel {
       required this.album,
       required trackArtist,
       required this.popularity,
+      required albumUrl,
+      required artistID,
       required this.trackSpotifyUri})
       : super(
           trackId: trackId,
           artist: trackArtist,
           trackName: trackName,
+          albumImageUrl: albumUrl,
+          artistID: artistID,
         );
 
   //TODO Need to add the null excception Protection
@@ -27,7 +31,9 @@ class TrackDetailsModel extends TrackModel {
       trackId: json['id'] ?? "",
       trackName: json['name'] ?? "",
       trackArtist: HelperMethods.concatingArtists(json['artists']),
+      artistID: HelperMethods.filterListForArtistId(json['artists']),
       album: AlbumModel.fromJson(json['album']),
+      albumUrl: json['album']['images'][0]['url'] ?? "",
       popularity: json['popularity'],
       trackSpotifyUri: json['uri'],
     );

@@ -6,6 +6,7 @@ import 'package:spotify_helper/screens/playlists_screen.dart';
 import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
 import 'package:spotify_helper/screens/search_for_item.dart';
 import 'package:spotify_helper/screens/settings_screen.dart';
+import 'package:spotify_helper/screens/track_details_screen.dart';
 import 'package:spotify_helper/screens/user_profile_screen.dart';
 
 // Side note - the bridging for the iOS application is not finished ( up to set -Objc Linker flag) -
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
                 PlaylistItemsScreen.routeName: (ctx) =>
                     const PlaylistItemsScreen(),
                 PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
+                TrackDetailPage.routeName: (ctx) => const TrackDetailPage()
               })),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.profile_circled),
