@@ -24,8 +24,6 @@ class TrackDetailsModel extends TrackModel {
           artistID: artistID,
         );
 
-  //TODO Need to add the null excception Protection
-
   factory TrackDetailsModel.fromJson(Map<String, dynamic> json) {
     return TrackDetailsModel(
       trackId: json['id'] ?? "",
@@ -38,11 +36,4 @@ class TrackDetailsModel extends TrackModel {
       trackSpotifyUri: json['uri'],
     );
   }
-
-  //TODO
-  //TODO
-  //TODO
-
-  @override
-  List<Object?> get props => [];
 }

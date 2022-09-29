@@ -46,8 +46,6 @@ class PercentageIndicatorWidget extends StatelessWidget {
     );
   }
 
-  //Used to determine what colour should be returned for the percentage indicator
-
   Color _caclulateColourForPercentile(int percentageValue) {
     if (percentageValue <= 25) {
       return Colors.red;
