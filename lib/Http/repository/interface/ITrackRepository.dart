@@ -16,4 +16,6 @@ abstract class ITrackRepository {
       {required String artistId,
       required String trackId,
       required String genres});
+
+  Future<bool> createPlayback({required Map<String, List<String>> uris});
 }

@@ -64,7 +64,11 @@ class PlaylistItemsScreen extends StatelessWidget {
         title: Text(args.name, style: const TextStyle(fontSize: 16)),
         actions: [
           IconButton(
-              icon: const Icon(Icons.exit_to_app),
+              icon: const ImageIcon(
+                AssetImage("images/spotify.png"),
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: () async {
                 try {
                   !Platform.isIOS

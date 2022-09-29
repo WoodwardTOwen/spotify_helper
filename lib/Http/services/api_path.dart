@@ -84,6 +84,9 @@ class ApiPath {
   static String getAudioFeaturesById({required String trackId}) =>
       "$baseUrl/v1/audio-features/$trackId";
 
+  //Playback
+  static String createPlayback = "$baseUrl/v1/me/player/play";
+
   //Authorization
   static String requestToken = '$baseUrl/api/token';
 }

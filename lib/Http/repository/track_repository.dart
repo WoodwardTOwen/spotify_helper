@@ -78,4 +78,21 @@ class TrackRepository implements ITrackRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<bool> createPlayback({required Map<String, List<String>> uris}) async {
+    try {
+      final response = await client.put(ApiPath.createPlayback,
+          options: Options(contentType: Headers.jsonContentType), data: uris);
+
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception.toString());
+      return false;
+    }
+  }
 }

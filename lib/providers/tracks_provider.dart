@@ -33,6 +33,16 @@ class TrackProvider with ChangeNotifier {
         await trackRepository.getArtistById(artistId: artistId);
   }
 
+  Future<void> createPlayback({required String trackId}) async {
+    final response = await trackRepository.createPlayback(uris: {
+      "uris": [
+        "spotify:track:$trackId",
+      ],
+    });
+
+    //boolean response to update the UI with a response code
+  }
+
   Future<void> getRecommendationsForTrack() async {
     final response = await trackRepository.getRecommendedTrack(
         artistId: _trackDetailsModel!.artistID[0],
