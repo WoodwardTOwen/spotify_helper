@@ -42,18 +42,19 @@ class TrackStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildStat("Appears On:", _trackDetailsModel.album.albumName),
-            const SizedBox(
-              height: 5,
-            ),
-            _buildStat("Album Release Date:",
-                _trackDetailsModel.album.albumReleaseDate),
-          ],
-        ));
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildStat("Appears On:", _trackDetailsModel.album.albumName),
+          const SizedBox(
+            height: 5,
+          ),
+          _buildStat(
+              "Album Release Date:", _trackDetailsModel.album.albumReleaseDate),
+        ],
+      ),
+    );
   }
 }

@@ -17,13 +17,6 @@ class PlaylistItemsScreen extends StatelessWidget {
 
   const PlaylistItemsScreen({Key? key}) : super(key: key);
 
-  void _navigateToAnotherScreen(String currentPlaylistId) async {
-    if (!await launchUrl(
-        Uri.parse(ApiPath.reRouteToPlaylistInApp(currentPlaylistId)))) {
-      throw 'Could not launch $currentPlaylistId playlist';
-    }
-  }
-
   void _showDialog(BuildContext context, String currentPlaylistId) {
     showDialog(
       context: context,
@@ -41,7 +34,8 @@ class PlaylistItemsScreen extends StatelessWidget {
             TextButton(
                 child: const Text('Yes'),
                 onPressed: () async {
-                  _navigateToAnotherScreen(currentPlaylistId);
+                  HelperMethods.navigateToAnotherScreen(
+                      ApiPath.reRouteToPlaylistInApp(currentPlaylistId));
                   Navigator.of(context).pop();
                 }),
           ],

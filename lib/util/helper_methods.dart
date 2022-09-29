@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelperMethods {
   static void createSnackBarMessage(BuildContext context, String stringContent,
@@ -78,4 +77,10 @@ class HelperMethods {
       jsonArtists
           .map((currentArtist) => currentArtist['id'] as String)
           .toList();
+
+  static void navigateToAnotherScreen(String path) async {
+    if (!await launchUrl(Uri.parse(path))) {
+      throw 'Could not launch selected item';
+    }
+  }
 }

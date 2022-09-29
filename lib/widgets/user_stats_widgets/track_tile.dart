@@ -57,11 +57,6 @@ class TrackTile extends StatelessWidget {
             onPressed: () => Provider.of<TrackProvider>(context, listen: false)
                 .createPlayback(trackId: trackId),
           ),
-          ImageIcon(
-            const AssetImage("images/spotify.png"),
-            color: Theme.of(context).colorScheme.primary,
-            size: 15,
-          ),
         ],
       );
 }

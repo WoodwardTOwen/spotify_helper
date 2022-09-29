@@ -84,6 +84,10 @@ class ApiPath {
   static String getAudioFeaturesById({required String trackId}) =>
       "$baseUrl/v1/audio-features/$trackId";
 
+  static String reRouteToTrackInApp(String trackId) {
+    return 'spotify:album:$trackId';
+  }
+
   //Playback
   static String createPlayback = "$baseUrl/v1/me/player/play";
 
