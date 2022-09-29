@@ -55,8 +55,17 @@ class ApiPath {
     }
   }
 
-  static String postNewTracktoPlaylist({required String playlistID}) =>
-      "$baseUrl/v1/playlists/$playlistID/tracks";
+  //Artists
+  static String getArtistById({required String artistId}) =>
+      "$baseUrl/v1/artists/$artistId";
+
+  //Recommendations API
+  static String getRecommendations(
+          {required String trackId,
+          required String artistId,
+          required String artistGenre,
+          int limit = 5}) =>
+      "$baseUrl/v1/recommendations?seed_artists=$artistId&seed_genres=$artistGenre&seed_tracks=$trackId&limit=$limit";
 
   //Tracks
   static String getListOfTracksByLimitAndOffset({
@@ -65,6 +74,22 @@ class ApiPath {
     required String playlistId,
   }) =>
       "$baseUrl/v1/playlists/$playlistId/tracks?limit=$limit&offset=$offset";
+
+  static String postNewTracktoPlaylist({required String playlistID}) =>
+      "$baseUrl/v1/playlists/$playlistID/tracks";
+
+  static String getTrackById({required String trackId}) =>
+      "$baseUrl/v1/tracks/$trackId";
+
+  static String getAudioFeaturesById({required String trackId}) =>
+      "$baseUrl/v1/audio-features/$trackId";
+
+  static String reRouteToTrackInApp(String trackId) {
+    return 'spotify:album:$trackId';
+  }
+
+  //Playback
+  static String createPlayback = "$baseUrl/v1/me/player/play";
 
   //Authorization
   static String requestToken = '$baseUrl/api/token';

@@ -44,11 +44,6 @@ class PlaylistFinderProvider with ChangeNotifier {
             50)); //Need a way to edit so this is recursive to get every possible result
   }
 
-  Future<bool> postNewTrack(
-          {required String trackID, required String playlistID}) async =>
-      await playlistRepository.postNewTrackToPlaylist(
-          trackID: trackID, playlistID: playlistID);
-
   Future<void> getSearchResults(String searchedForValue) async {
     clearCachedSearchItems();
     _searchedTrackResults.addAll(

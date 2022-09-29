@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelperMethods {
   static void createSnackBarMessage(BuildContext context, String stringContent,
@@ -62,5 +63,24 @@ class HelperMethods {
         );
       },
     );
+  }
+
+  static String concatingArtists(List<dynamic> jsonArtists) {
+    if (jsonArtists.length <= 1) return jsonArtists[0]['name'];
+    List<String> artists = jsonArtists
+        .map((currentArtist) => currentArtist['name'] as String)
+        .toList();
+    return artists.join(', ');
+  }
+
+  static List<String> filterListForArtistId(List<dynamic> jsonArtists) =>
+      jsonArtists
+          .map((currentArtist) => currentArtist['id'] as String)
+          .toList();
+
+  static void navigateToAnotherScreen(String path) async {
+    if (!await launchUrl(Uri.parse(path))) {
+      throw 'Could not launch selected item';
+    }
   }
 }

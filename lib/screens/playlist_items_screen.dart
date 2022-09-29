@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/Http/bloc/playlist_tracks/bloc/playlist_tracks_bloc.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
+import 'package:spotify_helper/screens/track_details_screen.dart';
 import 'package:spotify_helper/widgets/misc/network_image.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,13 +16,6 @@ class PlaylistItemsScreen extends StatelessWidget {
   static const routeName = '/playlist-items';
 
   const PlaylistItemsScreen({Key? key}) : super(key: key);
-
-  void _navigateToAnotherScreen(String currentPlaylistId) async {
-    if (!await launchUrl(
-        Uri.parse(ApiPath.reRouteToPlaylistInApp(currentPlaylistId)))) {
-      throw 'Could not launch $currentPlaylistId playlist';
-    }
-  }
 
   void _showDialog(BuildContext context, String currentPlaylistId) {
     showDialog(
@@ -39,7 +34,8 @@ class PlaylistItemsScreen extends StatelessWidget {
             TextButton(
                 child: const Text('Yes'),
                 onPressed: () async {
-                  _navigateToAnotherScreen(currentPlaylistId);
+                  HelperMethods.navigateToAnotherScreen(
+                      ApiPath.reRouteToPlaylistInApp(currentPlaylistId));
                   Navigator.of(context).pop();
                 }),
           ],
@@ -62,7 +58,11 @@ class PlaylistItemsScreen extends StatelessWidget {
         title: Text(args.name, style: const TextStyle(fontSize: 16)),
         actions: [
           IconButton(
-              icon: const Icon(Icons.exit_to_app),
+              icon: const ImageIcon(
+                AssetImage("images/spotify.png"),
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: () async {
                 try {
                   !Platform.isIOS
@@ -90,28 +90,40 @@ class PlaylistItemsScreen extends StatelessWidget {
                 return CustomScrollView(
                   slivers: <Widget>[
                     SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 350,
-                            width: 500,
-                            child: MyNetworkImageNotCached(
-                                playlistImageUrl: args.playlistImageUrl),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemBuilder: ((ctx, index) => TrackTile(
-                                  trackItem: state.tracks[index],
-                                )),
-                            itemCount: state.tracks.length,
-                          ),
-                        ],
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 125,
+                              width: 125,
+                              child: MyNetworkImageNotCached(
+                                  playlistImageUrl: args.playlistImageUrl),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              itemBuilder: ((ctx, index) => GestureDetector(
+                                    child: TrackTile(
+                                      trackItem: state.tracks[index],
+                                    ),
+                                    onTap: () => pushNewScreenWithRouteSettings(
+                                      context,
+                                      screen: const TrackDetailPage(),
+                                      settings: RouteSettings(
+                                          arguments:
+                                              state.tracks[index].trackId),
+                                    ),
+                                  )),
+                              itemCount: state.tracks.length,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

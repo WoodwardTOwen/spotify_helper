@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:spotify_helper/util/dio_util.dart';
-
 import '../../models/playlist_model.dart';
 import '../../models/track_model.dart';
 import '../services/api_path.dart';
@@ -51,24 +49,5 @@ class PlaylistRepository implements IPlaylistRepository {
         .toList();
 
     return List<TrackModel>.from(list);
-  }
-
-  Future<bool> postNewTrackToPlaylist(
-      {required String trackID, required String playlistID}) async {
-    try {
-      final response = await client.post(
-          ApiPath.postNewTracktoPlaylist(playlistID: playlistID),
-          options: Options(contentType: Headers.jsonContentType),
-          data: ApiPath.createUriForSpotify(trackID));
-
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (exception) {
-      print(exception.toString());
-      return false;
-    }
   }
 }
