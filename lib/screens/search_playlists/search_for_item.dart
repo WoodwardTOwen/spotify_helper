@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
-import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
+import 'package:spotify_helper/screens/search_playlists/search_all_playlists_screen.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 
 class SearchForItemScreen extends StatefulWidget {

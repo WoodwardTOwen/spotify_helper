@@ -9,13 +9,13 @@ abstract class ITrackRepository {
 
   Future<List<String>> getArtistById({required String artistId});
 
+  Future<dynamic> getUserTopItems({required String filter, int limit = 10});
+
   Future<TrackAudioFeaturesModel> getTrackFeaturesById(
       {required String trackId});
 
   Future<List<TrackDetailsModel>> getRecommendedTrack(
-      {required String artistId,
-      required String trackId,
-      required String genres});
+      {String artistId, String trackId, String genres});
 
   Future<bool> createPlayback({required Map<String, List<String>> uris});
 }

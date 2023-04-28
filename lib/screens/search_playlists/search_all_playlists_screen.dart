@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/providers/playlist_finder_provider.dart';
-import 'package:spotify_helper/screens/playlists_screen.dart';
+import 'package:spotify_helper/screens/playlists/playlists_screen.dart';
 import 'package:spotify_helper/util/helper_methods.dart';
 import 'package:spotify_helper/widgets/misc/generic_header.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_finder_loading_screen.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_finder.dart';
 
-import '../models/track_model.dart';
-import '../providers/tracks_provider.dart';
+import '../../models/track_model.dart';
+import '../../providers/tracks_provider.dart';
 
 class SearchAllPlaylistsScreen extends StatefulWidget {
   static const routeName = '/search-all-playlists';

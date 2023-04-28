@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/widgets/playlist_finder_widgets/playlist_tile_list_view.dart';
-import '../Http/bloc/playlist/playlist_bloc_bloc.dart';
-import '../models/user_model.dart';
-import '../providers/user_provider.dart';
+
+import '../../Http/bloc/playlist/playlist_bloc_bloc.dart';
+import '../../models/user_model.dart';
+import '../../providers/user_provider.dart';
 
 class PlaylistsScreen extends StatefulWidget {
   static const routeName = '/playlist-screen';
