@@ -88,6 +88,13 @@ class ApiPath {
     return 'spotify:album:$trackId';
   }
 
+  //Top User Items
+  static String getUserTopItems({required String filter, required int limit}) =>
+      "$baseUrl/v1/me/top/$filter?limit=$limit";
+
+  static String artistFilter = "artists";
+  static String trackFilter = "tracks";
+
   //Playback
   static String createPlayback = "$baseUrl/v1/me/player/play";
 

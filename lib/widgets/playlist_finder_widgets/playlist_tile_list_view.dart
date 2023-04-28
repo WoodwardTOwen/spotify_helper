@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
-
-import '../../screens/playlist_items_screen.dart';
+import '../../screens/playlists/playlist_items_screen.dart';
 import '../misc/network_image.dart';
 
 class PlaylistTileListView extends StatelessWidget {

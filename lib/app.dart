@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/providers/spotify_auth.dart';
 import 'package:spotify_helper/screens/home.dart';
-import 'package:spotify_helper/screens/login_screen.dart';
-import './screens/splash_screen.dart';
+import 'package:spotify_helper/screens/misc/login_screen.dart';
+import 'package:spotify_helper/screens/misc/splash_screen.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:spotify_helper/Http/bloc/playlist_tracks/bloc/playlist_tracks_bloc.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
-import 'package:spotify_helper/screens/track_details_screen.dart';
+import 'package:spotify_helper/screens/search_playlists/track_details_screen.dart';
 import 'package:spotify_helper/widgets/misc/network_image.dart';
 import 'package:spotify_helper/widgets/user_stats_widgets/track_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Http/services/api_path.dart';
-import '../util/helper_methods.dart';
+
+import '../../Http/services/api_path.dart';
+import '../../util/helper_methods.dart';
 
 class PlaylistItemsScreen extends StatelessWidget {
   static const routeName = '/playlist-items';

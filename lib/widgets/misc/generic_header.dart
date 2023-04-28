@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import '../../screens/settings_screen.dart';
+import '../../screens/user_profile/settings_screen.dart';
 import 'network_image.dart';
 
 class GenericHeader extends StatelessWidget {

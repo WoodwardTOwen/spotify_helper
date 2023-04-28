@@ -2,8 +2,8 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
-import '../providers/spotify_auth.dart';
-import '../providers/user_provider.dart';
+import '../../providers/spotify_auth.dart';
+import '../../providers/user_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings-screen';

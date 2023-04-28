@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:spotify_helper/screens/playlist_items_screen.dart';
-import 'package:spotify_helper/screens/playlists_screen.dart';
-import 'package:spotify_helper/screens/search_all_playlists_screen.dart';
-import 'package:spotify_helper/screens/search_for_item.dart';
-import 'package:spotify_helper/screens/settings_screen.dart';
-import 'package:spotify_helper/screens/track_details_screen.dart';
-import 'package:spotify_helper/screens/user_profile_screen.dart';
+import 'package:spotify_helper/screens/genre_filter.screen.dart';
+import 'package:spotify_helper/screens/playlists/playlist_items_screen.dart';
+import 'package:spotify_helper/screens/playlists/playlists_screen.dart';
+import 'package:spotify_helper/screens/queued_songs_screen.dart';
+import 'package:spotify_helper/screens/user_profile/settings_screen.dart';
+import 'package:spotify_helper/screens/search_playlists/search_all_playlists_screen.dart';
+import 'package:spotify_helper/screens/search_playlists/search_for_item.dart';
+import 'package:spotify_helper/screens/song_queue_screen.dart';
+import 'package:spotify_helper/screens/search_playlists/track_details_screen.dart';
+import 'package:spotify_helper/screens/user_profile/user_profile_screen.dart';
 
 // Side note - the bridging for the iOS application is not finished ( up to set -Objc Linker flag) -
 // Documentation - https://developer.spotify.com/documentation/ios/quick-start/
@@ -23,7 +26,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 1);
+      PersistentTabController(initialIndex: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,7 @@ class _HomeState extends State<Home> {
   List<Widget> _buildScreens() {
     return [
       const SearchForItemScreen(),
+      const SongQueueScreen(),
       const PlaylistsScreen(),
       const UserProfileScreen(),
     ];
@@ -75,6 +79,18 @@ class _HomeState extends State<Home> {
                 SearchForItemScreen.routeName: (ctx) =>
                     const SearchForItemScreen(),
                 PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
+              })),
+      PersistentBottomNavBarItem(
+          icon: const Icon(CupertinoIcons.playpause),
+          title: ("Suprise Me"),
+          activeColorPrimary: const Color.fromRGBO(239, 234, 216, 1),
+          inactiveColorPrimary: Colors.white38,
+          routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: SongQueueScreen.routeName,
+              routes: {
+                SongQueueScreen.routeName: (ctx) => const SongQueueScreen(),
+                GenreFilterScreen.routeName: (ctx) => const GenreFilterScreen(),
+                QueuedSongsScreen.routeName: (ctx) => const QueuedSongsScreen(),
               })),
       PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.music_house),

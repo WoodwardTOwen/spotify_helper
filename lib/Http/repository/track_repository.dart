@@ -51,6 +51,17 @@ class TrackRepository implements ITrackRepository {
   }
 
   @override
+  Future<dynamic> getUserTopItems(
+      {required String filter, int limit = 10}) async {
+    try {
+      return await client
+          .get(ApiPath.getUserTopItems(filter: filter, limit: limit));
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<TrackAudioFeaturesModel> getTrackFeaturesById(
       {required String trackId}) async {
     try {
@@ -64,9 +75,7 @@ class TrackRepository implements ITrackRepository {
 
   @override
   Future<List<TrackDetailsModel>> getRecommendedTrack(
-      {required String artistId,
-      required String trackId,
-      required String genres}) async {
+      {String artistId = "", String trackId = "", String genres = ""}) async {
     try {
       final response = await client.get(ApiPath.getRecommendations(
           trackId: trackId, artistId: artistId, artistGenre: genres));
