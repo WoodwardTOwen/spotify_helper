@@ -17,12 +17,12 @@ A handy tool to interact with the Spotify SDK/ Web API
 
 #### Version
 
-Pre Alpha - Not in a production worthy state
+Pre-Alpha 1.0.0
 
 ## Required
 
 Spotify application needs to be installed on the mobile device in order to use this application.
 
-In addition, please contact myself at woodwardtowen@gmail.com if you wish to use the application. This is due to the application still in 'Developer Mode' and has a max user base of 25 - Read more here: https://developer.spotify.com/documentation/web-api/concepts/quota-modes 
+In addition, please contact myself at woodwardtowen@gmail.com if you wish to use the application. This is due to the application still in 'Developer Mode' and has a max user base of 25 - [Read more here](https://developer.spotify.com/documentation/web-api/concepts/quota-modes) 
 
 Thanks!
