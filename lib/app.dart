@@ -23,7 +23,7 @@ class _AppState extends State<App> {
         theme: ThemeData(
           fontFamily: GoogleFonts.poppins().fontFamily,
           colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: const Color.fromRGBO(109, 139, 116, 1),
+              primary: const Color.fromRGBO(93, 95, 239, 1),
               secondary: Colors.amber),
           textTheme: const TextTheme(
             headline3: TextStyle(fontSize: 40, color: Colors.white),

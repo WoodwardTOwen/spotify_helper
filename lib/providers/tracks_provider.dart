@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:spotify_helper/Http/repository/track_repository.dart';
+import 'package:spotify_helper/Http/repository/user_stat_repository.dart';
 import 'package:spotify_helper/models/track_audio_features_model.dart';
 import 'package:spotify_helper/models/track_details_model.dart';
 
@@ -120,4 +121,41 @@ class TrackProvider with ChangeNotifier {
   void clearCurrentCheckListGenreList() => _currentGenreCheckList.clear();
 
   List<String> getCurrentCheckListGenreList() => _currentGenreCheckList;
+
+  /*
+  New Methods for Spotder
+ */
+
+  final List<TrackDetailsModel> _recommendedTracksListForTest = [];
+
+  List<TrackDetailsModel> get getRecommendedTracksListForTest {
+    return [..._recommendedTracksListForTest];
+  }
+
+  Future<void> getRecommendedTracksTest() async {
+    UserStatRepository userStatRepository = UserStatRepository();
+
+    final responseUserTopItems = await userStatRepository.getUsersTopItems(
+        timeFrame: 'short_term', limit: 50, offset: 0);
+
+    final listOfFirst5Items = responseUserTopItems.take(5);
+
+    final listOfTrackIds = listOfFirst5Items.map((e) => e.trackId).toList();
+
+    final jointListOfIds = listOfTrackIds.join(',');
+
+    final listOfRecommendedTracks = await trackRepository.getRecommendedTrack(
+        trackId: jointListOfIds, limit: 100);
+
+    //Filter out tracks that do not have a preview url
+
+    listOfRecommendedTracks.removeWhere((element) => element.previewUrl == '');
+
+    _recommendedTracksListForTest.addAll(listOfRecommendedTracks);
+  }
+
+  void removeFirstItemFromRecommendedTracksList() {
+    _recommendedTracksListForTest.removeAt(0);
+    notifyListeners();
+  }
 }

@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
+      backgroundColor: const Color.fromRGBO(49, 47, 47, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

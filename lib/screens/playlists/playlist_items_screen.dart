@@ -54,7 +54,7 @@ class PlaylistItemsScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as PlaylistModel;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
+      backgroundColor: const Color.fromRGBO(49, 47, 47, 1),
       appBar: AppBar(
         title: Text(args.name, style: const TextStyle(fontSize: 16)),
         actions: [

@@ -28,17 +28,13 @@ class TrackTile extends StatelessWidget {
             ? _trackItem.trackName
             : "${indexValue.toString()}. ${_trackItem.trackName}",
         style: const TextStyle(
-          fontSize: 14,
-          overflow: TextOverflow.ellipsis,
-        ),
+            fontSize: 14, overflow: TextOverflow.ellipsis, color: Colors.white),
         maxLines: 1,
       ),
       subtitle: Text(
         _trackItem.artist,
         style: const TextStyle(
-          fontSize: 12,
-          overflow: TextOverflow.ellipsis,
-        ),
+            fontSize: 12, overflow: TextOverflow.ellipsis, color: Colors.white),
         maxLines: 1,
       ),
       trailing: isTrailing ? _buildTrailing(context, _trackItem.trackId) : null,

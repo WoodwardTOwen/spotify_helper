@@ -9,13 +9,16 @@ class TrackModel extends Equatable {
       artist; //Soon to have its own model - for now keep it simple as a basic String
   final List<String> artistID;
   final String albumImageUrl;
+  final String previewUrl;
 
-  const TrackModel(
-      {required this.trackId,
-      required this.trackName,
-      required this.artistID,
-      this.artist = "",
-      this.albumImageUrl = ""});
+  const TrackModel({
+    required this.trackId,
+    required this.trackName,
+    required this.artistID,
+    this.artist = "",
+    this.albumImageUrl = "",
+    this.previewUrl = "",
+  });
 
   factory TrackModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -25,7 +28,8 @@ class TrackModel extends Equatable {
           trackName: "",
           artistID: [],
           artist: "",
-          albumImageUrl: "");
+          albumImageUrl: "",
+          previewUrl: "");
     }
     return TrackModel(
       trackId: json['id'] ?? "",
@@ -33,6 +37,7 @@ class TrackModel extends Equatable {
       artist: HelperMethods.concatingArtists(json['artists']),
       artistID: HelperMethods.filterListForArtistId(json['artists']),
       albumImageUrl: json['album']['images'][0]['url'] ?? "",
+      previewUrl: json['preview_url'] ?? "",
     );
   }
 
@@ -41,6 +46,7 @@ class TrackModel extends Equatable {
         'trackName': trackName,
         'artist': artist,
         'albumImageUrl': albumImageUrl,
+        'preview_url': previewUrl,
       };
 
   @override
@@ -49,5 +55,6 @@ class TrackModel extends Equatable {
         trackName,
         artist,
         albumImageUrl,
+        previewUrl,
       ];
 }

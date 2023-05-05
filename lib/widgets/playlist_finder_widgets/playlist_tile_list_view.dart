@@ -34,11 +34,11 @@ class PlaylistTileListView extends StatelessWidget {
         ),
         title: Text(
           _currentItem.name,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         ),
         subtitle: Text(
           _currentItem.owner.displayName,
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12, color: Colors.white),
         ),
       ),
     );

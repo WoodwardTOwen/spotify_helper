@@ -15,6 +15,7 @@ class TrackDetailsModel extends TrackModel {
       required this.popularity,
       required albumUrl,
       required artistID,
+      required previewUrl,
       required this.trackSpotifyUri})
       : super(
           trackId: trackId,
@@ -22,18 +23,19 @@ class TrackDetailsModel extends TrackModel {
           trackName: trackName,
           albumImageUrl: albumUrl,
           artistID: artistID,
+          previewUrl: previewUrl,
         );
 
   factory TrackDetailsModel.fromJson(Map<String, dynamic> json) {
     return TrackDetailsModel(
-      trackId: json['id'] ?? "",
-      trackName: json['name'] ?? "",
-      trackArtist: HelperMethods.concatingArtists(json['artists']),
-      artistID: HelperMethods.filterListForArtistId(json['artists']),
-      album: AlbumModel.fromJson(json['album']),
-      albumUrl: json['album']['images'][0]['url'] ?? "",
-      popularity: json['popularity'],
-      trackSpotifyUri: json['uri'],
-    );
+        trackId: json['id'] ?? "",
+        trackName: json['name'] ?? "",
+        trackArtist: HelperMethods.concatingArtists(json['artists']),
+        artistID: HelperMethods.filterListForArtistId(json['artists']),
+        album: AlbumModel.fromJson(json['album']),
+        albumUrl: json['album']['images'][0]['url'] ?? "",
+        popularity: json['popularity'],
+        trackSpotifyUri: json['uri'],
+        previewUrl: json['preview_url'] ?? "");
   }
 }

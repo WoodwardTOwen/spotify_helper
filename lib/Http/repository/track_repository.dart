@@ -39,6 +39,15 @@ class TrackRepository implements ITrackRepository {
     }
   }
 
+  Future<dynamic> getTrackByIdPreviewUrlTest({required String trackId}) async {
+    try {
+      final response = await client.get(ApiPath.getTrackById(trackId: trackId));
+      return response.data;
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
   @override
   Future<List<String>> getArtistById({required String artistId}) async {
     try {
@@ -75,10 +84,16 @@ class TrackRepository implements ITrackRepository {
 
   @override
   Future<List<TrackDetailsModel>> getRecommendedTrack(
-      {String artistId = "", String trackId = "", String genres = ""}) async {
+      {String artistId = "",
+      String trackId = "",
+      String genres = "",
+      int limit = 5}) async {
     try {
       final response = await client.get(ApiPath.getRecommendations(
-          trackId: trackId, artistId: artistId, artistGenre: genres));
+          trackId: trackId,
+          artistId: artistId,
+          artistGenre: genres,
+          limit: limit));
       final list = response.data['tracks']
           .map((item) => TrackDetailsModel.fromJson(item))
           .toList();
