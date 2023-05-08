@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:spotify_helper/Http/bloc/playlist_tracks/bloc/playlist_tracks_bloc.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 import 'package:spotify_helper/screens/search_playlists/track_details_screen.dart';
@@ -113,7 +113,8 @@ class PlaylistItemsScreen extends StatelessWidget {
                                     child: TrackTile(
                                       trackItem: state.tracks[index],
                                     ),
-                                    onTap: () => pushNewScreenWithRouteSettings(
+                                    onTap: () => PersistentNavBarNavigator
+                                        .pushNewScreenWithRouteSettings(
                                       context,
                                       screen: const TrackDetailPage(),
                                       settings: RouteSettings(

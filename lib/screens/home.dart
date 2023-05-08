@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:spotify_helper/screens/genre_filter.screen.dart';
 import 'package:spotify_helper/screens/playlists/playlist_items_screen.dart';
 import 'package:spotify_helper/screens/playlists/playlists_screen.dart';

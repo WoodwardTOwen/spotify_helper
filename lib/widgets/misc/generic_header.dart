@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../screens/user_profile/settings_screen.dart';
 import 'network_image.dart';
 
@@ -34,7 +34,8 @@ class GenericHeader extends StatelessWidget {
                         size: 26,
                         color: Colors.white,
                       ),
-                      onPressed: () => pushNewScreen(context,
+                      onPressed: () => PersistentNavBarNavigator.pushNewScreen(
+                          context,
                           screen: const SettingsScreen()),
                     )
                   : null),

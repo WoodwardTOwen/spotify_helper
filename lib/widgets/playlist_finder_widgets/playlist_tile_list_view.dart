@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:spotify_helper/models/action_enum.dart';
 import 'package:spotify_helper/models/playlist_model.dart';
 import '../../screens/playlists/playlist_items_screen.dart';
@@ -18,7 +18,7 @@ class PlaylistTileListView extends StatelessWidget {
       onTap: () {
         playlistAction != PlaylistAction.onGenericLoad
             ? Navigator.pop(context, _currentItem.id)
-            : pushNewScreenWithRouteSettings(
+            : PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                 context,
                 screen: const PlaylistItemsScreen(),
                 settings: RouteSettings(arguments: _currentItem),

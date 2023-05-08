@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/screens/queued_songs_screen.dart';
 import 'package:spotify_helper/util/helper_methods.dart';
@@ -31,7 +31,7 @@ class _GenreFilterScreenState extends State<GenreFilterScreen> {
     if (Provider.of<TrackProvider>(context, listen: false)
             .getCurrentGenreCheckListListLength() !=
         0) {
-      pushNewScreenWithRouteSettings(
+      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         screen: const QueuedSongsScreen(),
         settings: RouteSettings(arguments: getCheckListArgument()),
