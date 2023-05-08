@@ -18,4 +18,6 @@ abstract class ITrackRepository {
       {String artistId, String trackId, String genres});
 
   Future<bool> createPlayback({required Map<String, List<String>> uris});
+
+  Future<dynamic> getTrackByIdPreviewUrlTest({required String trackId});
 }

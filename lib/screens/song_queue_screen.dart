@@ -6,6 +6,7 @@ import '../models/action_enum.dart';
 import '../providers/tracks_provider.dart';
 import '../util/helper_methods.dart';
 import '../widgets/misc/network_image.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 class SongQueueScreen extends StatefulWidget {
   static const routeName = '/song-queue';
@@ -20,6 +21,7 @@ class _SongQueueState extends State<SongQueueScreen> {
   late TrackProvider _trackProvider;
   final assetsAudioPlayer = AssetsAudioPlayer();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  PaletteGenerator? paletteGenerator;
 
   //int offset = 0;
 
@@ -97,104 +99,147 @@ class _SongQueueState extends State<SongQueueScreen> {
         _trackProvider.getRecommendedTracksListForTest.first.previewUrl);
   }
 
+  Future<PaletteGenerator> _updatePaletteGenerator(String imageUrl) async {
+    paletteGenerator = await PaletteGenerator.fromImageProvider(
+      Image.network(imageUrl).image,
+    );
+    return paletteGenerator!;
+  }
+
+  Color _convertColourToRGBO(Color colour) {
+    return Color.fromRGBO(colour.red, colour.green, colour.blue, 0.4);
+  }
+
+  Color _checkIfPaletteIsInvalid(PaletteGenerator? paletteGenerator) {
+    if (paletteGenerator!.dominantColor != null) {
+      if (paletteGenerator.dominantColor?.color != null) {
+        return paletteGenerator.dominantColor!.color;
+      }
+    }
+    return Colors.white;
+  }
+
+  //Reform future builder to use snapshot data potentially??
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Spotder")),
-      key: _scaffoldKey,
-      backgroundColor: const Color.fromRGBO(239, 234, 216, 1),
-      body: FutureBuilder(
+    return FutureBuilder(
         future: _getTrackPreviewUrlTest(),
         builder: (ctx, snapshot) => snapshot.connectionState ==
                 ConnectionState.waiting
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Consumer<TrackProvider>(
-                      builder: (ctx, data, _) => Column(
-                            children: [
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () => print('In Progress'),
-                                        icon: const Icon(Icons.volume_mute)),
-                                  ]),
-                              Column(children: [
-                                SizedBox(
-                                  height: 150,
-                                  width: 150,
-                                  child: MyNetworkImageNotCached(
-                                    playlistImageUrl: data
-                                        .getRecommendedTracksListForTest
-                                        .first
-                                        .albumImageUrl,
+            : Consumer<TrackProvider>(
+                builder: (ctx, data, _) => FutureBuilder<PaletteGenerator>(
+                  future: _updatePaletteGenerator(_trackProvider
+                      .getRecommendedTracksListForTest
+                      .first
+                      .albumImageUrl), // async work
+                  builder: (BuildContext context,
+                          AsyncSnapshot<PaletteGenerator> snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Scaffold(
+                              appBar: AppBar(title: const Text("Spotder")),
+                              key: _scaffoldKey,
+                              backgroundColor: _convertColourToRGBO(
+                                  snapshot.data!.dominantColor!.color),
+                              body: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () =>
+                                                    print('In Progress'),
+                                                icon: const Icon(
+                                                    Icons.volume_mute)),
+                                          ]),
+                                      Column(children: [
+                                        SizedBox(
+                                          height: 150,
+                                          width: 150,
+                                          child: MyNetworkImageNotCached(
+                                            playlistImageUrl: data
+                                                .getRecommendedTracksListForTest
+                                                .first
+                                                .albumImageUrl,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Text(
+                                          data.getRecommendedTracksListForTest
+                                              .first.trackName,
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        Text(
+                                          data.getRecommendedTracksListForTest
+                                              .first.artist,
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ]),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  data.getRecommendedTracksListForTest.first
-                                      .trackName,
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                Text(
-                                  data.getRecommendedTracksListForTest.first
-                                      .artist,
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ]),
-                            ],
-                          )),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0, left: 0, right: 0, bottom: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ClipOval(
-                          child: Material(
-                            color: Colors.white, // Button color
-                            child: InkWell(
-                              splashColor: Colors.red, // Splash color
-                              onTap: () => _discardTrack(),
-                              child: const SizedBox(
-                                  width: 65,
-                                  height: 65,
-                                  child: Icon(Icons.close)),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 0, left: 0, right: 0, bottom: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ClipOval(
+                                          child: Material(
+                                            color: Colors.white, // Button color
+                                            child: InkWell(
+                                              splashColor:
+                                                  Colors.red, // Splash color
+                                              onTap: () => _discardTrack(),
+                                              child: const SizedBox(
+                                                  width: 65,
+                                                  height: 65,
+                                                  child: Icon(Icons.close)),
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                            onPressed: () => _startTrack(
+                                                _trackProvider
+                                                    .getRecommendedTracksListForTest
+                                                    .first
+                                                    .previewUrl),
+                                            icon: const Icon(Icons.refresh)),
+                                        ClipOval(
+                                          child: Material(
+                                            color: Colors.white, // Button color
+                                            child: InkWell(
+                                              splashColor:
+                                                  Colors.green, // Splash color
+                                              onTap: () => _saveTrack(_trackProvider
+                                                  .getRecommendedTracksListForTest
+                                                  .first
+                                                  .trackId),
+                                              child: const SizedBox(
+                                                  width: 65,
+                                                  height: 65,
+                                                  child: Icon(Icons.check)),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () => _startTrack(_trackProvider
-                                .getRecommendedTracksListForTest
-                                .first
-                                .previewUrl),
-                            icon: const Icon(Icons.refresh)),
-                        ClipOval(
-                          child: Material(
-                            color: Colors.white, // Button color
-                            child: InkWell(
-                              splashColor: Colors.green, // Splash color
-                              onTap: () => _saveTrack(_trackProvider
-                                  .getRecommendedTracksListForTest
-                                  .first
-                                  .trackId),
-                              child: const SizedBox(
-                                  width: 65,
-                                  height: 65,
-                                  child: Icon(Icons.check)),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-      ),
-    );
+                ),
+              ));
   }
 }

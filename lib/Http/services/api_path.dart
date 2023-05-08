@@ -81,6 +81,9 @@ class ApiPath {
   static String getTrackById({required String trackId}) =>
       "$baseUrl/v1/tracks/$trackId";
 
+  static String getMultipleTracksById({required String trackIds}) =>
+      "$baseUrl/v1/tracks?ids=$trackIds";
+
   static String getAudioFeaturesById({required String trackId}) =>
       "$baseUrl/v1/audio-features/$trackId";
 
