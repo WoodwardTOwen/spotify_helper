@@ -5,6 +5,7 @@ import 'package:spotify_helper/Http/repository/track_repository.dart';
 import 'package:spotify_helper/Http/repository/user_stat_repository.dart';
 import 'package:spotify_helper/models/track_audio_features_model.dart';
 import 'package:spotify_helper/models/track_details_model.dart';
+import 'package:spotify_helper/models/track_model.dart';
 
 import '../Http/services/api_path.dart';
 import '../models/checklist_model.dart';
@@ -128,15 +129,21 @@ class TrackProvider with ChangeNotifier {
 
   final List<TrackDetailsModel> _recommendedTracksListForTest = [];
 
+  final List<TrackModel> _ListOfUserTopItems = [];
+
   List<TrackDetailsModel> get getRecommendedTracksListForTest {
     return [..._recommendedTracksListForTest];
   }
 
-  Future<void> getRecommendedTracksTest() async {
+  //TODO ONCE WORKING (Paganation Strategy) -> Merge methods so they are re-usable
+
+  Future<List<TrackDetailsModel>> getRecommendedTracksTest() async {
     UserStatRepository userStatRepository = UserStatRepository();
 
     final responseUserTopItems = await userStatRepository.getUsersTopItems(
         timeFrame: 'short_term', limit: 50, offset: 0);
+
+    _ListOfUserTopItems.addAll(responseUserTopItems);
 
     final listOfFirst5Items = responseUserTopItems.take(5);
 
@@ -145,17 +152,50 @@ class TrackProvider with ChangeNotifier {
     final jointListOfIds = listOfTrackIds.join(',');
 
     final listOfRecommendedTracks = await trackRepository.getRecommendedTrack(
-        trackId: jointListOfIds, limit: 100);
+        trackId: jointListOfIds, limit: 5);
 
     //Filter out tracks that do not have a preview url
 
     listOfRecommendedTracks.removeWhere((element) => element.previewUrl == '');
 
     _recommendedTracksListForTest.addAll(listOfRecommendedTracks);
+
+    return _recommendedTracksListForTest;
   }
 
-  void removeFirstItemFromRecommendedTracksList() {
+  Future<List<TrackDetailsModel>> gatherNextResultsPagnation() async {
+    _ListOfUserTopItems.removeRange(0, 5);
+
+    final listOfFirst5Items = _ListOfUserTopItems.take(5);
+
+    final listOfTrackIds = listOfFirst5Items.map((e) => e.trackId).toList();
+
+    final jointListOfIds = listOfTrackIds.join(',');
+
+    final listOfRecommendedTracks = await trackRepository.getRecommendedTrack(
+        trackId: jointListOfIds, limit: 5);
+
+    //Filter out tracks that do not have a preview url
+
+    listOfRecommendedTracks.removeWhere((element) => element.previewUrl == '');
+
+    _recommendedTracksListForTest.addAll(listOfRecommendedTracks);
+
+    return _recommendedTracksListForTest;
+  }
+
+  //Checking if anymore tracks are required to be gathered
+
+  Future<void> checkRecommendedTracksHealth() async {
+    if (_recommendedTracksListForTest.length < 4) {
+      await gatherNextResultsPagnation();
+      notifyListeners();
+    }
+  }
+
+  void removeFirstItemFromRecommendedTracksList() async {
     _recommendedTracksListForTest.removeAt(0);
+    //await checkRecommendedTracksHealth(); //Will be de-coupled in the future during re-design
     notifyListeners();
   }
 }

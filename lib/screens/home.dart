@@ -5,6 +5,7 @@ import 'package:spotify_helper/screens/genre_filter.screen.dart';
 import 'package:spotify_helper/screens/playlists/playlist_items_screen.dart';
 import 'package:spotify_helper/screens/playlists/playlists_screen.dart';
 import 'package:spotify_helper/screens/queued_songs_screen.dart';
+import 'package:spotify_helper/screens/spotder.dart';
 import 'package:spotify_helper/screens/user_profile/settings_screen.dart';
 import 'package:spotify_helper/screens/search_playlists/search_all_playlists_screen.dart';
 import 'package:spotify_helper/screens/search_playlists/search_for_item.dart';
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
   List<Widget> _buildScreens() {
     return [
       const SearchForItemScreen(),
-      const SongQueueScreen(),
+      const Spotder(),
       const PlaylistsScreen(),
       const UserProfileScreen(),
     ];
@@ -86,11 +87,13 @@ class _HomeState extends State<Home> {
           activeColorPrimary: const Color.fromRGBO(239, 234, 216, 1),
           inactiveColorPrimary: Colors.white38,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: SongQueueScreen.routeName,
+              initialRoute: Spotder.routeName,
               routes: {
-                SongQueueScreen.routeName: (ctx) => const SongQueueScreen(),
-                GenreFilterScreen.routeName: (ctx) => const GenreFilterScreen(),
-                QueuedSongsScreen.routeName: (ctx) => const QueuedSongsScreen(),
+                Spotder.routeName: (ctx) => const Spotder(),
+                PlaylistsScreen.routeName: (ctx) => const PlaylistsScreen(),
+                //SongQueueScreen.routeName: (ctx) => const SongQueueScreen(),
+                //GenreFilterScreen.routeName: (ctx) => const GenreFilterScreen(),
+                //QueuedSongsScreen.routeName: (ctx) => const QueuedSongsScreen(),
               })),
       PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.music_house),
