@@ -30,19 +30,9 @@ class RecommendedTracksBloc
           final responseUserTopItems = await userStatRepository
               .getUsersTopItems(timeFrame: 'short_term', limit: 5, offset: 0);
 
-          final listOfTrackIds =
-              responseUserTopItems.map((e) => e.trackId).toList();
-
-          final jointListOfIds = listOfTrackIds.join(',');
-
-          final listOfRecommendedTracks = await trackRepository
-              .getRecommendedTrack(trackId: jointListOfIds, limit: 5);
-
-          listOfRecommendedTracks
-              .removeWhere((element) => element.previewUrl == '');
-
-          listOfRecommendedTracks
-              .unique((currentTrack) => currentTrack.trackId);
+          final listOfRecommendedTracks = await getListOfRecommendedTracks(
+              trackRepository: trackRepository,
+              listOfUserTopItems: responseUserTopItems);
 
           emit(RecommendedTracksLoaded(
               recommendedTracksList: listOfRecommendedTracks,
@@ -57,19 +47,9 @@ class RecommendedTracksBloc
                       .listOfUserTopItems
                       .length);
 
-          final listOfTrackIds =
-              responseUserTopItems.map((e) => e.trackId).toList();
-
-          final jointListOfIds = listOfTrackIds.join(',');
-
-          final listOfRecommendedTracks = await trackRepository
-              .getRecommendedTrack(trackId: jointListOfIds, limit: 5);
-
-          listOfRecommendedTracks
-              .removeWhere((element) => element.previewUrl == '');
-
-          listOfRecommendedTracks
-              .unique((currentTrack) => currentTrack.trackId);
+          final listOfRecommendedTracks = await getListOfRecommendedTracks(
+              listOfUserTopItems: responseUserTopItems,
+              trackRepository: trackRepository);
 
           if (listOfRecommendedTracks.isNotEmpty) {
             emit(RecommendedTracksLoaded(
@@ -79,15 +59,6 @@ class RecommendedTracksBloc
                         responseUserTopItems,
                 hasReachedMax: false));
           }
-
-/*           emit(listOfRecommendedTracks.isEmpty
-              ? (state as RecommendedTracksLoaded).copyWith(hasReachedMax: true)
-              : RecommendedTracksLoaded(
-                  recommendedTracksList: (state as RecommendedTracksLoaded).recommendedTracksList.clear() + listOfRecommendedTracks,
-                  listOfUserTopItems:
-                      (state as RecommendedTracksLoaded).listOfUserTopItems +
-                          responseUserTopItems,
-                  hasReachedMax: false)); */
         }
       } catch (exception) {
         emit(RecommendedTracksFailureState(error: exception.toString()));
@@ -98,3 +69,22 @@ class RecommendedTracksBloc
 
 bool _hasReachedMax(RecommendedTracksState state) =>
     state is RecommendedTracksLoaded && state.hasReachedMax;
+
+Future<List<TrackDetailsModel>> getListOfRecommendedTracks(
+    {int trackLimit = 5,
+    String timeFrame = 'short_term',
+    required TrackRepository trackRepository,
+    required List<TrackModel> listOfUserTopItems}) async {
+  final listOfTrackIds = listOfUserTopItems.map((e) => e.trackId).toList();
+
+  final jointListOfIds = listOfTrackIds.join(',');
+
+  final listOfRecommendedTracks = await trackRepository.getRecommendedTrack(
+      trackId: jointListOfIds, limit: 100);
+
+  listOfRecommendedTracks.removeWhere((element) => element.previewUrl == '');
+
+  listOfRecommendedTracks.unique((currentTrack) => currentTrack.trackId);
+
+  return listOfRecommendedTracks;
+}

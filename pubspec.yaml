@@ -53,6 +53,7 @@ dependencies:
   just_audio: ^0.9.32
   palette_generator: ^0.3.3+2
   swipe_cards: ^2.0.0+1
+  appinio_swiper: ^2.0.0
 
 dev_dependencies:
   flutter_test:
