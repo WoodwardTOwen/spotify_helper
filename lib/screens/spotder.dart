@@ -7,8 +7,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_helper/Http/bloc/recommended_tracks/recommened_tracks_bloc.dart';
 import 'package:spotify_helper/screens/playlists/playlists_screen.dart';
-import 'package:swipe_cards/swipe_cards.dart';
-
+import 'package:appinio_swiper/appinio_swiper.dart';
 import '../models/action_enum.dart';
 import '../models/track_details_model.dart';
 import '../providers/tracks_provider.dart';
@@ -34,30 +33,18 @@ class Spotder extends StatefulWidget {
 
 class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   late RecommendedTracksBloc _recommendedTracksBloc;
-
   final _audioPlayer = AudioPlayer();
+  final AppinioSwiperController controller = AppinioSwiperController();
+  List<TrackDetailsModel> currentList = [];
+  int currentCardIndex = 0;
 
-  final List<SwipeItem> _swipeItems = <SwipeItem>[];
-  late MatchEngine _matchEngine;
-
-//TODO for handling the audio out of application
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        print("app in resumed");
-        break;
-      case AppLifecycleState.inactive:
-        print("app in inactive");
-        break;
-      case AppLifecycleState.paused:
-        print("app in paused");
-        break;
-      case AppLifecycleState.detached:
-        print("app in detached");
-        break;
+    if (state == AppLifecycleState.paused) {
+      _audioPlayer.stop();
+    } else if (state == AppLifecycleState.resumed) {
+      _audioPlayer.play();
     }
   }
 
@@ -114,8 +101,6 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
         );
   }
 
-  Future<void> _stopTrack() async => await _audioPlayer.stop();
-
   void _startTrack(String trackPreviewUrl) async {
     try {
       await _audioPlayer.setUrl(
@@ -127,32 +112,11 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
     await _audioPlayer.play();
   }
 
-  void createCardItems(List<TrackDetailsModel> tracks) async {
-    for (int i = 0; i < tracks.length; i++) {
-      _swipeItems.add(
-        SwipeItem(
-          content: tracks[i],
-          likeAction: () async {
-            print('Like Has been interacted with');
-            _addNewTrack(tracks[i].trackId, context);
-          },
-          nopeAction: () async {
-            await _stopTrack();
-            print('Nope has been interacted with');
-          },
-        ),
-      );
-    }
-    _matchEngine = MatchEngine(swipeItems: _swipeItems);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Spotder NEW ONE")),
+        appBar: AppBar(title: const Text("Spotder")),
         key: _scaffoldKey,
-        //backgroundColor: _convertColourToRGBO(
-        //snapshot.data!.dominantColor!.color),
         backgroundColor: const Color.fromRGBO(49, 47, 47, .5),
         body: BlocBuilder<RecommendedTracksBloc, RecommendedTracksState>(
           builder: (ctx, state) {
@@ -163,9 +127,8 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
               ));
             }
             if (state is RecommendedTracksLoaded) {
-              final recommendedTrackList = state.recommendedTracksList;
-              _startTrack(recommendedTrackList.first.previewUrl);
-              createCardItems(recommendedTrackList);
+              currentList = state.recommendedTracksList;
+              _startTrack(state.recommendedTracksList.first.previewUrl);
               return Container(
                   decoration: const BoxDecoration(
                       color: Color.fromRGBO(49, 47, 47, .5)),
@@ -183,125 +146,123 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    IconButton(
-                                        onPressed: () => print('In Progress'),
-                                        icon: const Icon(
-                                          Icons.volume_mute,
-                                          color: Colors.white,
-                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 20, top: 10),
+                                      child: IconButton(
+                                          onPressed: () => controller.unswipe(),
+                                          icon: const Icon(
+                                            Icons.undo,
+                                            color: Colors.white,
+                                          )),
+                                    ),
                                   ]),
                               SizedBox(
                                 height: 450, //TODO needs to be dynamic
-                                child: SwipeCards(
-                                  matchEngine: _matchEngine,
-                                  itemBuilder:
+                                child: AppinioSwiper(
+                                  swipeOptions: AppinioSwipeOptions.horizontal,
+                                  unlimitedUnswipe: true,
+                                  controller: controller,
+                                  unswipe: _unswipe,
+                                  onSwipe: _swipe,
+                                  padding: const EdgeInsets.only(
+                                    left: 25,
+                                    right: 25,
+                                    top: 15,
+                                    bottom: 50,
+                                  ),
+                                  onEnd: _onEnd,
+                                  cardsCount:
+                                      state.recommendedTracksList.length,
+                                  cardsBuilder:
                                       (BuildContext context, int index) {
                                     return Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                _swipeItems[index]
-                                                    .content
-                                                    .albumImageUrl),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(state
+                                              .recommendedTracksList[index]
+                                              .albumImageUrl),
+                                          fit: BoxFit.cover,
                                         ),
-                                        //I blured the parent container to blur background image, you can get rid of this part
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 10.0, sigmaY: 10.0),
-                                            child: Container(
-                                              width: 300,
-                                              //you can change opacity with color here(I used black) for background.
-                                              decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withOpacity(0.4),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(20))),
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 150,
-                                                        width: 150,
-                                                        child:
-                                                            MyNetworkImageNotCached(
-                                                          playlistImageUrl:
-                                                              _swipeItems[index]
-                                                                  .content
-                                                                  .albumImageUrl,
-                                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      //I blured the parent container to blur background image, you can get rid of this part
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 10.0, sigmaY: 10.0),
+                                          child: Container(
+                                            width: 300,
+                                            //you can change opacity with color here(I used black) for background.
+                                            decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.4),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 150,
+                                                      width: 150,
+                                                      child:
+                                                          MyNetworkImageNotCached(
+                                                        playlistImageUrl: state
+                                                            .recommendedTracksList[
+                                                                index]
+                                                            .albumImageUrl,
                                                       ),
-                                                      const SizedBox(
-                                                          height: 20),
-                                                      Text(
-                                                        _swipeItems[index]
-                                                            .content
-                                                            .trackName,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontFamily: GoogleFonts
-                                                                    .montserrat()
-                                                                .fontFamily,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 18),
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                      Text(
-                                                        _swipeItems[index]
-                                                            .content
-                                                            .artist,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontFamily: GoogleFonts
-                                                                    .montserrat()
-                                                                .fontFamily,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14),
-                                                      ),
-                                                    ]),
-                                              ),
+                                                    ),
+                                                    const SizedBox(height: 20),
+                                                    Text(
+                                                      state
+                                                          .recommendedTracksList[
+                                                              index]
+                                                          .trackName,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily: GoogleFonts
+                                                                  .montserrat()
+                                                              .fontFamily,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    SizedBox(height: 5),
+                                                    Text(
+                                                      state
+                                                          .recommendedTracksList[
+                                                              index]
+                                                          .artist,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily: GoogleFonts
+                                                                  .montserrat()
+                                                              .fontFamily,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 14),
+                                                    ),
+                                                  ]),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
+                                    ));
                                   },
-                                  onStackFinished: () {
-                                    _swipeItems.clear();
-                                    _recommendedTracksBloc
-                                        .emit(RecommendedTracksLoadingState());
-                                    _recommendedTracksBloc
-                                        .add(RecommendedTracksFetchedEvent());
-                                  },
-                                  itemChanged: (SwipeItem item, int index) {
-                                    //print("item: ${item.content.text}, index: $index");
-                                    _startTrack(
-                                        _swipeItems[index].content.previewUrl);
-                                  },
-                                  upSwipeAllowed: true,
-                                  fillSpace: true,
                                 ),
                               ),
                             ],
@@ -318,7 +279,7 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
                                     child: InkWell(
                                       splashColor: Colors.red, // Splash color
                                       onTap: () async {
-                                        _matchEngine.currentItem!.nope();
+                                        controller.swipeLeft();
                                       },
                                       child: const SizedBox(
                                           width: 65,
@@ -337,7 +298,7 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
                                     child: InkWell(
                                       splashColor: Colors.green, // Splash color
                                       onTap: () async {
-                                        _matchEngine.currentItem!.like();
+                                        controller.swipeRight();
                                       },
                                       child: const SizedBox(
                                           width: 65,
@@ -360,5 +321,35 @@ class _SpotderState extends State<Spotder> with WidgetsBindingObserver {
             return Container();
           },
         ));
+  }
+
+  void _swipe(int index, AppinioSwiperDirection direction) async {
+    if (direction == AppinioSwiperDirection.right) {
+      _addNewTrack(currentList[index - 1].trackId, context);
+      if (currentList.length - 1 >= index) {
+        _startTrack(currentList[index].previewUrl);
+      }
+    } else if (direction == AppinioSwiperDirection.left) {
+      //await _stopTrack();
+      if (currentList.length - 1 >= index) {
+        _startTrack(currentList[index].previewUrl);
+      }
+    }
+    currentCardIndex++;
+  }
+
+  void _unswipe(bool unswiped) async {
+    if (unswiped) {
+      currentCardIndex--;
+      _startTrack(currentList[currentCardIndex].previewUrl);
+    } else {
+      print("FAIL: no card left to unswipe");
+    }
+  }
+
+  void _onEnd() {
+    currentCardIndex = 0;
+    _recommendedTracksBloc.emit(RecommendedTracksLoadingState());
+    _recommendedTracksBloc.add(RecommendedTracksFetchedEvent());
   }
 }
